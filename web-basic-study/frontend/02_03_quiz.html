@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery 연습하고 가기!</title>
+
+    <!-- jQuery를 import 합니다 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <style>
+        .question-box {
+            margin: 10px 0 20px 0;
+        }
+
+        .red-color {
+          color: red;
+        }
+    </style>
+
+    <script>
+        const api = "http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99";
+
+        function reload() {
+            $.ajax({
+                type: "GET",
+                url: api,
+                data: {},
+                success: (res) => {
+                    const {RealtimeCityAir: {row}} = res;
+                    const ul = $('#names-q1');
+                    ul.empty();
+
+                    row.forEach(data => {
+                        const {MSRSTE_NM, IDEX_MVL} = data;
+
+                        let liClass = '';
+                        if (parseInt(IDEX_MVL) >= 70) {
+                            liClass = 'class="red-color"';
+                        }
+
+                        ul.append(`<li ${liClass}>${MSRSTE_NM} : ${IDEX_MVL}</li>`);
+                    });
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="question-box">
+        <button onclick="reload()">업데이트</button>
+        <ul id="names-q1"></ul>
+    </div>
+</body>
+
+</html>

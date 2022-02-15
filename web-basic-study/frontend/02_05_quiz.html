@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>JQuery 연습하고 가기!</title>
+
+    <!-- JQuery를 import 합니다 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <style>
+        div.question-box {
+            margin: 10px 0 20px 0;
+        }
+
+        div.question-box > div {
+            margin-top: 30px;
+        }
+
+    </style>
+
+    <script>
+        const api = 'https://api.thecatapi.com/v1/images/search';
+        const reload = () => {
+            $.ajax({
+                type: 'GET',
+                url: api,
+                data: {},
+                success: (res) => {
+                    const {url} = res[0];
+                    $('#img-cat').attr("src", url);
+                }
+            });
+        };
+
+        $(document).ready(() => {
+            reload();
+        });
+    </script>
+
+</head>
+<body>
+    <div class="question-box">
+        <button onclick="reload()">업데이트</button>
+        <div>
+            <img id="img-cat"/>
+        </div>
+    </div>
+</body>
+</html>

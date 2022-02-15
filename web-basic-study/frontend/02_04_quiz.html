@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JQuery 연습하고 가기!</title>
+    <!-- JQuery를 import 합니다 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <style>
+
+        table {
+            border: 1px solid;
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            padding: 10px;
+            border: 1px solid;
+        }
+
+        .red-color {
+            color: red;
+        }
+    </style>
+
+    <script>
+        const api = 'http://spartacodingclub.shop/sparta_api/seoulbike';
+        const reload = () => {
+            $.ajax({
+                type: "GET",
+                url: api,
+                data: {},
+                success: (res) => {
+                    const tblBody = $('#names-q1');
+                    tblBody.empty();
+                    const {getStationList: {row}} = res;
+                    row.forEach(data => {
+                        const {stationName, rackTotCnt, parkingBikeTotCnt} = data;
+
+                        let trClass = '';
+                        if (parseInt(parkingBikeTotCnt) <= 5) {
+                            trClass = 'class="red-color"';
+                        }
+
+                        tblBody.append(`<tr ${trClass}>
+                                            <td>${stationName}</td>
+                                            <td>${rackTotCnt}</td>
+                                            <td>${parkingBikeTotCnt}</td>
+                                        </tr>`);
+                    });
+                }
+            });
+        }
+    </script>
+
+</head>
+
+<body>
+    <div>
+        <button onclick="reload()">업데이트</button>
+        <table>
+            <thead>
+                <tr>
+                    <td>거치대 위치</td>
+                    <td>거치대 수</td>
+                    <td>현재 거치된 따릉이 수</td>
+                </tr>
+            </thead>
+            <tbody id="names-q1">
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
