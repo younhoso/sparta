@@ -106,3 +106,5 @@ dist
 # ETC
 .DS_Store
 .idea
+.expo
+.expo-shared
