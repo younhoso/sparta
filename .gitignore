@@ -108,3 +108,4 @@ dist
 .idea
 .expo
 .expo-shared
+__pycache__
