@@ -109,3 +109,4 @@ dist
 .expo
 .expo-shared
 __pycache__
+venv
