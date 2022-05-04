@@ -28,7 +28,13 @@ def bucket_post():
 def bucket_done():
 		id_receive = request.form['id_give']
 		db.bucket.update_one({'id': int(id_receive)}, {'$set':{'done': 1}})
-		return jsonify({'msg': '수정완료'})
+		return jsonify({'msg': '완료 함'})
+
+@app.route("/bucket/undone", methods=["POST"])
+def bucket_undone():
+		id_receive = request.form['id_give']
+		db.bucket.update_one({'id': int(id_receive)}, {'$set':{'done': 0}})
+		return jsonify({'msg': '취소 함'})
 
 @app.route("/bucket", methods=["GET"])
 def bucket_get():

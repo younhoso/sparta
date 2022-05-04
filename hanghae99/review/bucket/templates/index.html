@@ -123,6 +123,13 @@
                 temp_html = `
                 <li>
                   <h2 class="done">✅ ${bucket}</h2>
+                  <button
+                    onclick="undone_bucket(${id})"
+                    type="button"
+                    class="btn btn-outline-danger"
+                  >
+                    취소!
+                  </button>
                 </li>
                 `;
               }
@@ -147,6 +154,18 @@
         $.ajax({
           type: "POST",
           url: "/bucket/done",
+          data: { id_give: num },
+          success: function (response) {
+            alert(response["msg"]);
+            window.location.reload();
+          },
+        });
+      }
+
+      function undone_bucket(num) {
+        $.ajax({
+          type: "POST",
+          url: "/bucket/undone",
           data: { id_give: num },
           success: function (response) {
             alert(response["msg"]);
