@@ -55,9 +55,11 @@
                     const tempHtml = diaries.map((el) => {
                         const title = el['title']
                         const content = el['content']
+                        const file = el['file']
+
                         const temp_html = `
                         <div class="card">
-                            <img src="../static/monet.jpg" class="card-img-top"/>
+                            <img src="../static/${file}" class="card-img-top"/>
                             <div class="card-body">
                                 <h5 class="card-title">${title}</h5>
                                 <p class="card-text">${content}</p>
