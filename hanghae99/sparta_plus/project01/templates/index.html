@@ -43,21 +43,40 @@
         function listing(){
             $.ajax({
                 type: "GET",
-                url: "/diary?sample_give=샘플데이터",
+                url: "/diary",
                 data: {},
                 success: function(response){
-                alert(response['msg'])
+                    const diaries = response['all_diary'];
+                    const tempHtml = diaries.map((el) => {
+                        const title = el['title']
+                        const content = el['content']
+                        const temp_html = `
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">${title}</h5>
+                                <p class="card-text">${content}</p>
+                            </div>
+                        </div>
+                        `
+                        return temp_html;
+                    }).join('');
+
+                    $('#cards-box').html(tempHtml);
                 }
             })
         };
 
         function posting() {
+            const title = $('#title').val();
+            const content = $('#content').val();
+
             $.ajax({
                 type: "POST",
                 url: "/diary",
-                data: { sample_give:'샘플데이터' },
+                data: { title_give:title, content_give:content },
                 success: function(response){
                     alert(response['msg'])
+                    window.location.reload()
                 }
             })
         };
@@ -71,16 +90,16 @@
 			<h1 class="display-4">나홀로 일기장</h1>
             <div class="posting-box">
                 <div class="form-group">
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="사진 제목">
+                    <input type="email" class="form-control" id="title" placeholder="사진 제목">
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="내용 입력"></textarea>
+                    <textarea class="form-control" id="content" rows="3" placeholder="내용 입력"></textarea>
                 </div>
                 <button onclick="posting()" type="button" class="btn btn-primary">저장하기</button>
             </div>
 		</div>
 	</div>
-    <div class="card-columns">
+    <div class="card-columns" id="cards-box">
         <div class="card">
           <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
           <div class="card-body">
