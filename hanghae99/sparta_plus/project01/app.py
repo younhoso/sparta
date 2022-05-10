@@ -2,7 +2,8 @@ from flask import Flask, render_template, jsonify, request
 app = Flask(__name__)
 
 from pymongo import MongoClient
-client = MongoClient('localhost', 27017)
+# client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://test:test@localhost', 27017)
 db = client.dbsparta_plus_week1
 
 from datetime import datetime
@@ -33,10 +34,15 @@ def save_diary():
     doc = {
         'title': title_receive,
         'content': content_receive,
-        'file': f'{filename}.{extension}' #위에서 만든 파일명 추가합니다.
+        'file': f'{filename}.{extension}', #위에서 만든 파일명 추가합니다.
+        'time': today.strftime('%Y.%m.%d')
     }
     db.diary.insert_one(doc) #DB에 저장합니다.
     return jsonify({'msg': '저장 완료!'})
 
 if __name__ == '__main__':  
    app.run('0.0.0.0',port=5000,debug=True)
+
+
+
+   

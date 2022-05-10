@@ -41,6 +41,11 @@
         .posting-box > .custom-file {
             margin-bottom: 20px;
         }
+        .save-date {
+            color: gray;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -58,6 +63,7 @@
                         const title = el['title']
                         const content = el['content']
                         const file = el['file']
+                        const time = el['time']
 
                         const temp_html = `
                         <div class="card">
@@ -65,6 +71,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">${title}</h5>
                                 <p class="card-text">${content}</p>
+                                <p class="save-date">${time}</p>
                             </div>
                         </div>
                         `
