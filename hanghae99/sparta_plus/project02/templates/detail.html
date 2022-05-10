@@ -77,7 +77,7 @@
 							//get_definitions()
 					})
 
-					function get_definitions() {
+					//function get_definitions() {
 							$.ajax({
 									type: "GET",
 									url: `https://owlbot.info/api/v4/dictionary/${word}`,
@@ -118,6 +118,35 @@
 										$('#definitions').html(html_temp)
 									}
 							})
+					//}
+					
+					function save_word() {
+							$.ajax({
+									type: "POST",
+									url: `/api/save_word`,
+									data: {
+										word_give: "{{ word }}",
+										definition_give: "{{ result.definitions[0].definition }}"
+									},
+									success: function (response) {
+										alert(response["msg"])
+										window.location.href = "/detail/{{word}}?status_give=old"
+									}
+							});
+					}
+				
+					function delete_word() {
+							$.ajax({
+									type: "POST",
+									url: `/api/delete_word`,
+									data: {
+										word_give: "{{word}}"
+									},
+									success: function (response) {
+											alert(response["msg"])
+											window.location.href = "/"
+									}
+							});
 					}
 				</script>
     </head>
@@ -133,9 +162,9 @@
 									{% endif %}
 							</div>
 							{%if status == "new"%}
-							<button id="btn-save" class="btn btn-outline-sparta btn-lg"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+							<button id="btn-save" class="btn btn-outline-sparta btn-lg" onclick="save_word()"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
 							{% else %}
-							<button id="btn-delete" class="btn btn-sparta btn-lg"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+							<button id="btn-delete" class="btn btn-sparta btn-lg" onclick="delete_word()"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
 							{% endif %}
 					</div>
 					<hr>
