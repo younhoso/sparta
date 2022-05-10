@@ -9,7 +9,7 @@ from datetime import datetime
 
 @app.route('/')
 def home():
-   return render_template('index.html')
+   return render_template('index.html', title = '스파르타코딩클럽 | 부트스트랩 연습하기',)
 
 @app.route('/diary', methods=['GET'])
 def show_diary():
