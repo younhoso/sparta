@@ -132,8 +132,11 @@
 										<h5 id="pronunciation" style="display: inline;">/{{ result.pronunciation }}/</h5>
 									{% endif %}
 							</div>
+							{%if status == "new"%}
 							<button id="btn-save" class="btn btn-outline-sparta btn-lg"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+							{% else %}
 							<button id="btn-delete" class="btn btn-sparta btn-lg"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+							{% endif %}
 					</div>
 					<hr>
 					<div id="definitions">

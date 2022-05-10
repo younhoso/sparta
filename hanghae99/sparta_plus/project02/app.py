@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, redirect, url_for
+from flask import Flask, request, render_template, jsonify, redirect, url_for
 from pymongo import MongoClient
 import requests
 
@@ -16,10 +16,11 @@ def main():
 
 @app.route('/detail/<keyword>')
 def detail(keyword):
+    status_receive = request.args.get("status_give")
     # API에서 단어 뜻 찾아서 결과 보내기
     r = requests.get(f"https://owlbot.info/api/v4/dictionary/{keyword}", headers={"Authorization": "Token 638fec2a658eb48efcc8f3c5072498878c0432b0"})
     result = r.json()
-    return render_template("detail.html", word=keyword, result=result)
+    return render_template("detail.html", word=keyword, result=result, status=status_receive)
 
 
 @app.route('/api/save_word', methods=['POST'])
