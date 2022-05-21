@@ -5,27 +5,3 @@
 	height: 100vh;
 	display: flex;
 } 
-
-.container {
-	width: 50vw;
-	height: 80vh;
-	margin: auto;
-	background-color: #fff;
-	max-width: 350px;
-	padding: 16px;
-	border: 1px solid #ddd;
-	border-radius: 5px;
-}
-
-.container h1 {
-	color: slateblue;
-	text-align: center;
-}
-
-.container .line {margin: 16px 0;}
-
-.list-item {
-	padding: 16px;
-	margin: 8px ;
-	background-color: aliceblue;
-}

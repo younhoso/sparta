@@ -1,5 +1,6 @@
 import React from 'react';
 import BuckeList from './BuckeList'
+import styled from "styled-components";
 import "./style.css"
 
 class App extends React.Component {
@@ -13,11 +14,11 @@ class App extends React.Component {
   render() {
     return (
       <div className='App'>
-        <div className='container'>
-          <h1>내 버킷리스트</h1>
-          <hr className='line'/>
+        <Container>
+          <Title>내 버킷리스트</Title>
+          <Line />
           <BuckeList list={this.state.list}/>
-        </div>
+        </Container>
       </div>
     )
   }
@@ -33,5 +34,24 @@ class App extends React.Component {
 //     </div>
 //   );
 // }
+
+const Container = styled.div`
+    width: 50vw;
+    height: 80vh;
+    margin: auto;
+    background-color: #fff;
+    max-width: 350px;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+`
+const Title = styled.h1`
+	color: slateblue;
+	text-align: center;
+`
+
+const Line = styled.hr`
+  margin: 16px 0;
+`
 
 export default App;
