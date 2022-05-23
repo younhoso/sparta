@@ -1,9 +1,11 @@
-import React, {useState, useEffect} from 'react';
-
-function Dog() {
-
+function Dog(props) {	
+	console.log(props)
+	const news = () => {
+		console.log(props)
+		props.history.push("/")
+	}
 	return (
-		<div>Dog 화면 입니다!</div>
+		<div onClick={news}>Dog 화면입니다!</div>
 	);
 }
 export default Dog;
