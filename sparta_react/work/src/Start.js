@@ -1,42 +1,22 @@
-import React from "react";
+import React from 'react';
+import styled from "styled-components";
 
-const Start = (props) => {
-    console.log(props);
+function Start({name}) {
+
   return (
-    <div
-      style={{
-        display: "flex",
-        height: "100vh",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "16px",
-        boxSizing: "border-box",
-      }}
-    >
-     
-      <h1 style={{ fontSize: "1.5em", lineHeight: "1.5" }}>
-        나는 <span style={{
-            backgroundColor: "#fef5d4",
-            padding: "5px 10px",
-            borderRadius: "30px"
-        }}>{props.name}</span>에 대해 얼마나 알고 있을까?
-      </h1>
-      <input style={{
-          border: "1px solid #dadafc",
-          borderRadius: "30px",
-          padding: "10px", 
-          width: "100%"
-      }}/>
-      <button style={{
-          padding: "10px 36px",
-          backgroundColor: "#dadafc",
-          border: "#dadafc",
-          borderRadius: "30px",
-          margin: "36px 0px"
-      }}>시작하기</button>
-    </div>
+    <TextPrint>나는 {name ? <Text>{name}</Text> : null} 에 대해서<br/> 얼마나 알고 있을까?</TextPrint>
   );
-};
+}
 
+
+const TextPrint = styled.div`
+  height: 30px;
+  line-height: 30px;
+`
+
+const Text = styled.span`
+  background-color: #fef5d4;
+  padding: 5px 10px;
+  border-radius: 30px;
+`
 export default Start;
