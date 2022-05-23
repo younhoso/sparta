@@ -9,31 +9,52 @@ class App extends React.Component {
     this.state = {
       list : ["영화관 가기", "매일 책읽기" , "수영 배우기"],
     }
+
+    this.text = React.createRef()
+  }
+
+  componentDidMount(){
+    console.log(this.text.current)
   }
 
   render() {
+    // console.log(this.text.current)
     return (
       <div className='App'>
+        <MyStyled bg_color={false}>
+          <ul>
+            <p>Im here!!</p>
+          </ul>
+        </MyStyled>
         <Container>
           <Title>내 버킷리스트</Title>
           <Line />
           <BuckeList list={this.state.list}/>
         </Container>
+        <div>
+          <input type="text" ref={this.text} onChange={() => {
+            console.log(this.text.current.value)            
+          }}/>
+        </div>
       </div>
     )
   }
 }
 
-
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <BuckeList/>
-//     </div>
-//   );
-// }
+const MyStyled = styled.div`
+  width: 50vw;
+  min-height: 150px;
+  background-color: ${(props) => (props.bg_color ? "red" : "purple")};
+  ul {
+    p {
+      color: blue;
+      &:hover {
+      background-color: yellow;
+    }
+    }
+  }
+  
+`
 
 const Container = styled.div`
     width: 50vw;
