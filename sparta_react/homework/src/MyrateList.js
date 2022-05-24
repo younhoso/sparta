@@ -2,13 +2,13 @@ import React from 'react';
 import {useHistory} from "react-router-dom"
 import styled from 'styled-components';
 
-function MyrateList({list}) {
+function MyrateList({aver, list, clear}) {
 	const cout = [0, 1, 2, 3, 4];
 	const history =  useHistory()
 	return (
 		<div>
+			<h3>내 일주일은?</h3>
 			{list.map((item, i) => {
-				console.log(item)
 				const {day, rate} = item;
 				return (
 					<div key={i}>{day}
@@ -17,7 +17,7 @@ function MyrateList({list}) {
 							<WeekRates 
 								key={idx}
 								style={{
-									color: rate > idx ? "yellowgreen":"rgb(221, 221, 221)"
+									color: rate > idx ? "yellowgreen":"#9d9d9d"
 								}}
 								>★
 							</WeekRates>
@@ -29,6 +29,8 @@ function MyrateList({list}) {
 					</div>
 				)
 			})}
+			<TextAver>평균 평점<br/>{aver}</TextAver>
+			<Btn onClick={clear}>Reset</Btn>
 		</div>
 	);
 }
@@ -43,6 +45,25 @@ const ArrayBtn = styled.button`
 	background-color: transparent;
 	font-size: 20px;
 	cursor: pointer;
+`
+
+const TextAver = styled.div`
+  color: blue;
+  padding: 9px;
+  font-size: 25px;
+  font-weight: bold;
+`
+
+const Btn = styled.button`
+  width: 100px;
+  height: fit-content;
+  background-color: dodgerblue;
+  border-radius: 50px;
+  text-align: center;
+  margin: 10px 0px 0px;
+  border: none;
+  color: #fff;
+  padding: 16px 20px;
 `
 
 export default MyrateList;

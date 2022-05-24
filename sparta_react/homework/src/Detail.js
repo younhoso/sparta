@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {useParams, useHistory} from "react-router-dom"
+import styled from 'styled-components';
 import RatingInput from './RatingInput';
 
 function Detail() {
@@ -19,15 +20,24 @@ function Detail() {
 	return (
 		<div>
 			<span>{parms.name}</span>요일 평점 남기기
-			<RatingInput  
+			<RatingInput
 				name="rating"
         value={values.rating}
         onChange={handleChange}
 			/>
-			<button onClick={() => {
+			<Btn onClick={() => {
 				history.goBack()
-			}}>평점남기기</button>
+			}}>평점남기기</Btn>
 		</div>
 	);
 }
+
+const Btn = styled.button`
+	border: none;
+	background-color: dodgerblue;
+	width: 160px;
+	height: 40px;
+	border-radius: 50px;
+	color: #fff;
+`
 export default Detail;

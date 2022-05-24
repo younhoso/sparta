@@ -31,14 +31,14 @@ function RatingInput({name, value, onChange}) {
 const ReviewTextBox = styled.div`
   position: relative;
   text-align: center;
-  padding-bottom: 50px;
+  padding: 10px 0;
 `;
 
 const Won = styled.span`
 	display: inline-block;
 	border-radius: 30px;
 	margin: 5px;
-	color: rgb(221, 221, 221);
+	color: #9d9d9d;
 	&.selected{
 		color: yellowgreen;
 	}
