@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 
 const BucketList = (props) => {
   let history = useHistory();
-  console.log(props);
   const my_lists = props.list;
 
   return (

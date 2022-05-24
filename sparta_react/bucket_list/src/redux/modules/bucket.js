@@ -14,7 +14,7 @@ export function createBucket(bucket){
 
 // Reducer
 export default function reducer(state = initialState, action = {}) {
-  switch (action.type) {
+	switch (action.type) {
 		case "bucket/CREATE" : {
 			const new_bucket_list = [...state.list, action.bucket];
 			return {list : new_bucket_list};

@@ -19,7 +19,6 @@ function App() {
     setList([...list, text.current.value]);
   }
 
-  console.log(list);
   return (
     <div className="App">
       <Container>
