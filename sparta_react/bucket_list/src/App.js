@@ -10,7 +10,6 @@ import Detail from "./Detail";
 import NotFound from "./NotFound";
 import {createBucket} from './redux/modules/bucket'
 
-
 function App() {
   const [list, setList] = React.useState(["영화관 가기", "매일 책읽기", "수영 배우기"]);
   const text = React.useRef(null);
