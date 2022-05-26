@@ -12,6 +12,7 @@ function MyrateList({aver, list, clear}) {
 				const {day, rate} = item;
 				return (
 					<div key={i}>{day}
+					
 					{cout.map((cur, idx) => {
 						return (
 							<WeekRates 

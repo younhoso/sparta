@@ -10,14 +10,17 @@ function random(n) {
 
 function App() {
   const [list, setList] = useState(["월", "화", "수", "목", "금", "토", "일"]);
+  
   const [items, setItems] = useState(0);
   const week_rates = list.map((day, idx) => {
+
     return {
       day: day,
       rate: random(5),
     }
   });
   const newRates = week_rates.map(el => el.rate);
+  console.log(week_rates)
   const aver = (arr) => arr.reduce((acc, cur) => acc + cur) / arr.length;
 
   const handleLoad = () => {
