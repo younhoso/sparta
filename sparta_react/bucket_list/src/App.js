@@ -18,8 +18,11 @@ function App() {
     // 스프레드 문법! 기억하고 계신가요? :) 
     // 원본 배열 list에 새로운 요소를 추가해주었습니다.
     // setList([...list, text.current.value]);
-    const addData = {text: `${text.current.value}`, completed: false}
+    const addData = {text: text.current.value, completed: false}
     dispatch(createBucket(addData));
+  }
+  const windowTop = () => {
+    window.scrollTo({top:0, left:0, behavior:"smooth"})
   }
 
   return (
@@ -47,6 +50,9 @@ function App() {
         <input type="text" ref={text} />
         <button onClick={addBucketList}>추가하기</button>
       </Input>
+      <div>
+        <button onClick={windowTop}>위로가기</button>
+      </div>
     </div>
   );
 }
