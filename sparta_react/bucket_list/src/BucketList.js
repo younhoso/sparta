@@ -11,8 +11,8 @@ const BucketList = (props) => {
       {my_lists.map((list, index) => {
         return (
           <ItemStyle
-            completed={list.completed}
-            className="list_item"
+            // completed={list.completed}
+            className={list.completed ? "is_open" : null}
             key={index}
             onClick={() => {
               history.push("/detail/"+index);
@@ -28,8 +28,9 @@ const BucketList = (props) => {
 
 const ListStyle = styled.div`
   display: flex;
+  height: 50vh;
+  max-height: 50vh;
   flex-direction: column;
-  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
 `;
@@ -37,7 +38,10 @@ const ListStyle = styled.div`
 const ItemStyle = styled.div`
   padding: 16px;
   margin: 8px;
-  background-color: ${(props) => props.completed ? "red" : "aliceblue"};
+  &.is_open {
+    background-color:slateblue;
+    color: #fff;
+  }
 `;
 
 export default BucketList;
