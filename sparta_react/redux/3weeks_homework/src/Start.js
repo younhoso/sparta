@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import img from "./scc_img01.png";
-// import { setName } from "./redux/modules/user";
+import { setName } from "./redux/modules/user";
 
 function Start({name}) {
 	const history = useHistory();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const name_ref = useRef(null);
 
 	return (
@@ -43,6 +43,7 @@ function Start({name}) {
       />
 			<Button
         onClick={() => {
+          dispatch(setName(name_ref.current.value));
           history.push("/quiz");
         }}
       >
