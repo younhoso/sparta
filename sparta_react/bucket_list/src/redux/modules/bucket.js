@@ -41,7 +41,6 @@ export default function reducer(state = initalState, action = {}){
 					return el
 				}
 			})
-			console.log({list: newBucketList})
 			return {list: newBucketList}
 		}
 
