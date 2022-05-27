@@ -9,6 +9,7 @@ import BucketList from "./BucketList";
 import Detail from "./Detail";
 import NotFound from "./NotFound";
 import {createBucket} from './redux/modules/bucket'
+import Progress from "./Progress";
 
 function App() {
   const [list, setList] = React.useState(["영화관 가기", "매일 책읽기", "수영 배우기"]);
@@ -26,6 +27,7 @@ function App() {
     <div className="App">
       <Container>
           <Title>내 버킷리스트</Title>
+          <Progress />
           <Line />
         <Switch>
           {/* 컴포넌트를 넣어줍니다. */}
