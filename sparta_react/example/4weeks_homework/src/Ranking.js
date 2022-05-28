@@ -5,9 +5,9 @@ import styled from 'styled-components';
 function Ranking({name}) {
 	const history = useHistory();
 	const user_data = [
-		{score : 40, user_name: "소윤호1", message: "르탄아 안녕!"},
-		{score : 80, user_name: "소윤호2", message: "르탄아 안녕!"},
-		{score : 60, user_name: "소윤호3", message: "르탄아 안녕!"}
+		{id: 1, score : 40, user_name: "소윤호1", message: "르탄아 안녕!"},
+		{id: 2, score : 80, user_name: "소윤호2", message: "르탄아 안녕!"},
+		{id: 3, score : 60, user_name: "소윤호3", message: "르탄아 안녕!"}
 	]
 	const user_sort_data = user_data.sort((a, b) => b.score - a.score);
 
@@ -15,9 +15,8 @@ function Ranking({name}) {
 		<div>
 			<Header>000명의 사람들 중에서 당신은?</Header>
 			{user_sort_data.map((el, idx) => {
-				console.log(el)
 				return (
-					<List>
+					<List key={el.id}>
 						<Item>
 							<h1>{idx+1}등</h1>
 							<div>
