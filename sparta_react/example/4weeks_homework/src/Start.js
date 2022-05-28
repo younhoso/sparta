@@ -1,7 +1,7 @@
 import React,{useRef} from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import img from "./scc_img01.png";
 import { setName } from "./redux/modules/user";
 
@@ -9,6 +9,7 @@ function Start({name}) {
 	const history = useHistory();
   const dispatch = useDispatch();
   const name_ref = useRef(null);
+  const quiz_name = useSelector((state) => state.quiz.quiz_name)
 
 	return (
 		<Container>
@@ -28,7 +29,7 @@ function Start({name}) {
             borderRadius: "30px",
           }}
         >
-          {name}
+          {quiz_name}
         </Highlight>
         에 대해 얼마나 알고 있을까?
       </h1>

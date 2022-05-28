@@ -27,9 +27,9 @@ function Ranking({name}) {
 					</List>
 				)
 			})}
-			<Button><button onClick={() => {
+			<Button onClick={() => {
 				history.push("/");
-			}}> 다시 하기 </button></Button>
+			}}> 다시 하기 </Button>
 		</div>
 	);
 }
@@ -49,11 +49,18 @@ const Header = styled.div`
 	border-bottom: 1px solid #888;
 `
 const List = styled.div`
+	margin: 10px 0;
 	&:nth-child(2){padding-top: 55px;}
 `
 const Button = styled.div`
 	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+	display: inline-block;
 	bottom: 30px;
-	width: 100vw;
+	padding: 10px;
+	border-radius: 10px;
+	color: #fff;
+	background-color: deeppink;
 `
 export default Ranking;

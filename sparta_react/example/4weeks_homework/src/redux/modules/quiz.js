@@ -5,6 +5,7 @@ export const addAnswer = (user_answer) => {
 }
 
 const initialState = {
+  quiz_name: "르탄이",
 	quiz_list: [
 		{question: "르탄이 1살이다.", answer: false},
 		{question: "르탄이 2살이다.", answer: false},

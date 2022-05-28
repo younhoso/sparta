@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Route, Switch} from 'react-router-dom';
 import { withRouter } from "react-router";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import Start from "./Start";
 import Quiz from "./Quiz";
 import Score from "./Score";
