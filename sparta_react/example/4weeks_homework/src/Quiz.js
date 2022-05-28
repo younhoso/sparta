@@ -4,6 +4,7 @@ import {useHistory} from "react-router-dom"
 import {useSelector, useDispatch} from 'react-redux';
 import rtan from "./scc_img01.png";
 import {addAnswer} from "./redux/modules/quiz"
+import Progress from "./Progress";
 
 const Quiz = () => {
 	const history = useHistory();
@@ -32,6 +33,7 @@ const Quiz = () => {
 
   return (
     <div>
+			<Progress />
 			<p>{answerList.length + 1}번 문제</p>
 			<h3>{quiz_list[answerList.length].question}</h3>
 			<img src={rtan}/>
