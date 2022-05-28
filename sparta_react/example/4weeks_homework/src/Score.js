@@ -1,9 +1,11 @@
 import React from 'react';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { useHistory } from 'react-router-dom';
+import {setScore} from './redux/modules/user';
 
 function Score() {
 	const history = useHistory();
+	const dispatch = useDispatch();
 	const quiz_name = useSelector(state => state.quiz.quiz_name);
 	const quiz_list = useSelector(state => state.quiz.quiz_list);
 	const userAnserList = useSelector(state => state.quiz.answerList);
@@ -12,6 +14,7 @@ function Score() {
 				return q.answer === userAnserList[idx]
 			}).length;
 	const score = Math.round(_score);
+	dispatch(setScore(score))
 
 	return (
 		<div>

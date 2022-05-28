@@ -1,22 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-function Ranking({name}) {
+function Ranking() {
 	const history = useHistory();
-	const user_data = [
-		{id: 1, score : 40, user_name: "소윤호1", message: "르탄아 안녕!"},
-		{id: 2, score : 80, user_name: "소윤호2", message: "르탄아 안녕!"},
-		{id: 3, score : 60, user_name: "소윤호3", message: "르탄아 안녕!"}
-	]
+	const user_data = useSelector((state) => state.ranking.ranking)
 	const user_sort_data = user_data.sort((a, b) => b.score - a.score);
 
 	return (
 		<div>
-			<Header>000명의 사람들 중에서 당신은?</Header>
+			<Header>{user_sort_data.length}명의 사람들 중에서 당신은?</Header>
 			{user_sort_data.map((el, idx) => {
 				return (
-					<List key={el.id}>
+					<List key={idx}>
 						<Item>
 							<h1>{idx+1}등</h1>
 							<div>
