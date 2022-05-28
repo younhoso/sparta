@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useRef, useEffect} from "react";
 import styled from "styled-components";
 import { Route, Switch } from "react-router-dom";
 import {useDispatch} from 'react-redux';
+import {collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc} from 'firebase/firestore';
 
 // BucketList 컴포넌트를 import 해옵니다.
 // import [컴포넌트 명] from [컴포넌트가 있는 파일경로];
@@ -10,10 +11,34 @@ import Detail from "./Detail";
 import NotFound from "./NotFound";
 import {createBucket} from './redux/modules/bucket'
 import Progress from "./Progress";
+import {db} from "./firebase";
 
 function App() {
-  const text = React.useRef(null);
+  const text = useRef(null);
   const dispatch = useDispatch();
+
+  const getData = async () => {
+    const query = await getDocs(collection(db, "bucket"));
+    query.forEach((doc) => {
+      console.log(doc.id, doc.data() )
+    });
+  };
+  const addData = () => {
+    addDoc(collection(db, "bucket"), {text: "new", completed: false})
+  };
+  const updateData = () => {
+    const docRef = doc(db, "bucket", "xzLXKl1FJh94GvI2uWUg")
+    updateDoc(docRef, {completed: true})
+  };
+  const deleteData = () => {
+    const docRef = doc(db, "bucket", "LjHV8ywkPDvfQ8twxfwG")
+    deleteDoc(docRef)
+  }
+
+  useEffect(() => {
+    
+  },[])
+
   const addBucketList = () => {
     // 스프레드 문법! 기억하고 계신가요? :) 
     // 원본 배열 list에 새로운 요소를 추가해주었습니다.
