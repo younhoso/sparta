@@ -51,6 +51,20 @@ export const createBucketFB = (bucket) => {
 	 const bucket_data = {id: docRef.id, ...bucket};
 	 dispatch(createBucket(bucket_data))
 	}
+};
+
+export const updateBucketFB = (bucket_id) => {
+	return async function (dispatch, getState) {
+		const docRef = doc(db, "bucket", bucket_id);
+		await updateDoc(docRef, {completed: true});
+
+		const _bucket_list = getState().bucket.list;
+		const bucket_index = _bucket_list.findIndex((b) => {
+			return b.id === bucket_id;
+		});
+
+		dispatch(updateBucket(bucket_index))
+	}
 }
 
 // Reducer
