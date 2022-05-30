@@ -55,6 +55,10 @@ export const createBucketFB = (bucket) => {
 
 export const updateBucketFB = (bucket_id) => {
 	return async function (dispatch, getState) {
+		if(!bucket_id){
+			window.alert('ID가 없네요')
+			return;
+		}
 		const docRef = doc(db, "bucket", bucket_id);
 		await updateDoc(docRef, {completed: true});
 
@@ -64,6 +68,24 @@ export const updateBucketFB = (bucket_id) => {
 		});
 
 		dispatch(updateBucket(bucket_index))
+	}
+};
+
+export const deleteBucketFB = (bucket_id) => {
+	return async function (dispatch, getState) {
+		if(!bucket_id){
+			window.alert('ID가 없네요')
+			return;
+		}
+		const docRef = doc(db, "bucket", bucket_id);
+		await deleteDoc(docRef)
+
+		const _bucket_list = getState().bucket.list;
+		const bucket_index = _bucket_list.findIndex((b) => {
+			return b.id === bucket_id;
+		});
+
+		dispatch(deleteBucket(bucket_index))
 	}
 }
 

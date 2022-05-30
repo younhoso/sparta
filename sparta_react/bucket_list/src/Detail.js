@@ -1,6 +1,6 @@
 import {useParams, useHistory} from "react-router-dom";
 import {useSelector, useDispatch} from 'react-redux';
-import {deleteBucket, updateBucketFB} from "./redux/modules/bucket"
+import {deleteBucketFB, updateBucketFB} from "./redux/modules/bucket"
 
 function Detail(props) {
 	const dispatch = useDispatch();
@@ -15,7 +15,7 @@ function Detail(props) {
 				dispatch(updateBucketFB(bucket_list[index].id))
 			}}>완료하기</button>
 			<button onClick={() => {
-				dispatch(deleteBucket(index))
+				dispatch(deleteBucketFB(bucket_list[index].id))
 				goBack();
 			}}>삭제하기</button>
 		</div>
