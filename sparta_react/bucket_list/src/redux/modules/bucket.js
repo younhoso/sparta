@@ -1,4 +1,8 @@
+import {db} from "../../firebase";
+import {collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc} from "firebase/firestore"
+
 // Actions
+const LOAD = 'bucket/LOAD'
 const CREATE = 'bucket/CREATE';
 const UPDATE = 'bucket/UPDATE';
 const DELETE = 'bucket/DELETE';
@@ -13,6 +17,10 @@ const initalState = {
 }
 
 // Action Creators
+export function loadBucket(bucket_list) {
+	return {type: LOAD, bucket_list }
+}
+
 export function createBucket(bucket) {
 	return { type: CREATE, bucket };
 }
@@ -25,9 +33,33 @@ export function deleteBucket(bucket_index) {
 	return {type: DELETE, bucket_index};
 }
 
+// Middlewares
+export const loadBucketFB = () => {
+	return async function (dispatch) {
+		const bucket_data = await getDocs(collection(db, "bucket"));
+		let bucket_list = [];
+		bucket_data.forEach((cur, idx) => {
+			bucket_list = [...bucket_list, {id:cur.id, ...cur.data()}];
+		})
+		dispatch(loadBucket(bucket_list));
+	}
+};
+
+export const createBucketFB = (bucket) => {
+	return async function (dispatch) {
+	 const docRef	= await addDoc(collection(db, "bucket"), bucket);
+	 const bucket_data = {id: docRef.id, ...bucket};
+	 dispatch(createBucket(bucket_data))
+	}
+}
+
 // Reducer
 export default function reducer(state = initalState, action = {}){
 	switch(action.type){
+		case LOAD: {
+			return {list: action.bucket_list}
+		}
+
 		case CREATE: {
 			const new_bucket_list = [...state.list, action.bucket];
 			return {list : new_bucket_list};

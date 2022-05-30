@@ -9,7 +9,7 @@ import {collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc} from 'fi
 import BucketList from "./BucketList";
 import Detail from "./Detail";
 import NotFound from "./NotFound";
-import {createBucket} from './redux/modules/bucket'
+import {createBucket, loadBucket, loadBucketFB, createBucketFB} from './redux/modules/bucket'
 import Progress from "./Progress";
 import {db} from "./firebase";
 
@@ -20,11 +20,12 @@ function App() {
   const getData = async () => {
     const query = await getDocs(collection(db, "bucket"));
     query.forEach((doc) => {
-      console.log(doc.id, doc.data() )
+      // console.log(doc.id, doc.data() )
+
     });
   };
   const addData = () => {
-    addDoc(collection(db, "bucket"), {text: "new", completed: false})
+    addDoc(collection(db, "bucket"), {text: "new2", completed: false})
   };
   const updateData = () => {
     const docRef = doc(db, "bucket", "xzLXKl1FJh94GvI2uWUg")
@@ -36,16 +37,20 @@ function App() {
   }
 
   useEffect(() => {
-    
+    dispatch(loadBucketFB());
   },[])
 
   const addBucketList = () => {
     // 스프레드 문법! 기억하고 계신가요? :) 
     // 원본 배열 list에 새로운 요소를 추가해주었습니다.
     // setList([...list, text.current.value]);
+    
     const addData = {text: text.current.value, completed: false}
-    dispatch(createBucket(addData));
+    // dispatch(createBucket(addData)); //여기서 액션을 바로 사용함.
+
+    dispatch(createBucketFB(addData)); //여기서 액션을 바로 시용하지 않고, 미들웨어를 사용함.
   }
+
   const windowTop = () => {
     window.scrollTo({top:0, left:0, behavior:"smooth"})
   }
