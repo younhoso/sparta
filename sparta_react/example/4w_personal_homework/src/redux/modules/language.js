@@ -16,12 +16,12 @@ export const createLanguage = (language) => {
 	return {type: CREATE, language};
 }
 
-export const updateLanguage = (language_id) => {
-	return {type: UPDATE, language_id}
+export const updateLanguage = (language_idx) => {
+	return {type: UPDATE, language_idx}
 }
 
-export const deleteLanguage = (language_id) => {
-	return {type: DELETE, language_id};
+export const deleteLanguage = (language_idx) => {
+	return {type: DELETE, language_idx};
 }
 
 // Middlewares
@@ -46,15 +46,39 @@ export const createLanguageFB = (language) => {
 
 export const updateLanguageFB = (language_id) => {
 	return async function (dispatch, getState) {
+		if(!language_id){
+			window.alert('ID가 없네요')
+			return;
+		}
 		const docRef = doc(db, "language", language_id)
-		await updateDoc(docRef, {completed: true})
-
 		const _language_list = getState().language.list;
 		const language_index = _language_list.findIndex((b) => {
 			return b.id === language_id;
 		});
+		
+		if(!_language_list[language_index].completed){
+			await updateDoc(docRef, {completed: true})
+		} else {
+			await updateDoc(docRef, {completed: false})
+		}
 
 		dispatch(updateLanguage(language_index))
+	}
+}
+
+export const deleteBucketFB = (language_id) => {
+	return async function(dispatch, getState) {
+		if(!language_id){
+			window.alert('ID가 없네요')
+			return;
+		}
+		const docRef = doc(db, "language", language_id);
+		await deleteDoc(docRef)
+		const _language_list = getState().language.list;
+		const language_index = _language_list.findIndex((b) => {
+			return b.id === language_id;
+		});
+		dispatch(deleteLanguage(language_index))
 	}
 }
 
@@ -79,17 +103,21 @@ const language = (state = initalState, action = {}) => {
 
 		case UPDATE: {
 			const newLanguageList = state.list.map((el, idx) => {
-				if(parseInt(action.language_id) === idx){
+				if(state.list[action.language_idx].completed === idx){
 					return {...el, completed: true}
-				} else {
-					return el
 				}
+				return el
 			})
 			return {list: newLanguageList}
 		}
 
-		case DELETE:
-			return state;
+		case DELETE:{
+			const new_list = state.list.filter((el, idx) => {
+				return parseInt(action.language_idx) !== idx;
+			});
+
+			return {list: new_list} ;
+		}
 		default:
 			return state;
 	}

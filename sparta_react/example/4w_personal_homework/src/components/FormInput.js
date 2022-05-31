@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import {createLanguageFB} from './redux/modules/language';
+import {createLanguageFB} from '../redux/modules/language';
 
 const FormInput = ({nameTit}) => {
 	const firstRef = useRef(null);

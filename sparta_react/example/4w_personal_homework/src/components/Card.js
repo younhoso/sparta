@@ -1,9 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import {updateLanguageFB} from './redux/modules/language';
+import {updateLanguageFB, deleteBucketFB} from '../redux/modules/language';
 
 const Card = () => {
   const history	= useHistory()
@@ -22,13 +22,13 @@ const Card = () => {
 					<InnerBtn>
 						<button onClick={() => {
 							dispatch(updateLanguageFB(el.id))
-							history.push('/');
 						}}>확인</button>
 						<button onClick={() => {
 							history.push(`/word/${el.id}/edit`);
 						}}>수정</button>
-
-						<button href="#0">삭제</button>
+						<button onClick={() => {
+							dispatch(deleteBucketFB(el.id))
+						}}>삭제</button>
 					</InnerBtn>
 				</Item>)
 			})}

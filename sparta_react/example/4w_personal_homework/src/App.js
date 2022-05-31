@@ -2,10 +2,10 @@ import {Route} from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import Header from "./Header";
-import Card from "./Card";
-import FormInput from "./FormInput"
-import AddBtn from "./AddBtn"
+import Header from "./components/Header";
+import Card from "./components/Card";
+import FormInput from "./components/FormInput"
+import AddBtn from "./components/AddBtn"
 import "./reset.css";
 import {loadLanguageFB} from './redux/modules/language'
 
