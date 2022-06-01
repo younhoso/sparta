@@ -16,8 +16,8 @@ export const createLanguage = (language) => {
 	return {type: CREATE, language};
 }
 
-export const updateLanguage = (language_idx) => {
-	return {type: UPDATE, language_idx}
+export const updateLanguage = (language_idx, bloon) => {
+	return {type: UPDATE, language_idx, bloon}
 }
 
 export const deleteLanguage = (language_idx) => {
@@ -55,14 +55,8 @@ export const updateLanguageFB = (language_id) => {
 		const language_index = _language_list.findIndex((b) => {
 			return b.id === language_id;
 		});
-		
-		if(!_language_list[language_index].completed){
-			await updateDoc(docRef, {completed: true})
-		} else {
-			await updateDoc(docRef, {completed: false})
-		}
-
-		dispatch(updateLanguage(language_index))
+		dispatch(updateLanguage(language_index, false))
+		await updateDoc(docRef, {completed: false})
 	}
 }
 
@@ -103,12 +97,12 @@ const language = (state = initalState, action = {}) => {
 
 		case UPDATE: {
 			const newLanguageList = state.list.map((el, idx) => {
-				if(state.list[action.language_idx].completed === idx){
+				if(state.list[action.language_idx].id === el.id){
 					return {...el, completed: true}
 				}
 				return el
 			})
-			return {list: newLanguageList}
+			return {...state, list: newLanguageList}
 		}
 
 		case DELETE:{
