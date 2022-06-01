@@ -1,7 +1,7 @@
 import React, {useRef, useEffect} from "react";
 import styled from "styled-components";
 import { Route, Switch } from "react-router-dom";
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc} from 'firebase/firestore';
 
 // BucketList 컴포넌트를 import 해옵니다.
@@ -12,29 +12,12 @@ import NotFound from "./NotFound";
 import {createBucket, loadBucket, loadBucketFB, createBucketFB} from './redux/modules/bucket'
 import Progress from "./Progress";
 import {db} from "./firebase";
+import Spinner from "./Spinner";
 
 function App() {
   const text = useRef(null);
   const dispatch = useDispatch();
-
-  const getData = async () => {
-    const query = await getDocs(collection(db, "bucket"));
-    query.forEach((doc) => {
-      // console.log(doc.id, doc.data() )
-
-    });
-  };
-  const addData = () => {
-    addDoc(collection(db, "bucket"), {text: "new2", completed: false})
-  };
-  const updateData = () => {
-    const docRef = doc(db, "bucket", "xzLXKl1FJh94GvI2uWUg")
-    updateDoc(docRef, {completed: true})
-  };
-  const deleteData = () => {
-    const docRef = doc(db, "bucket", "LjHV8ywkPDvfQ8twxfwG")
-    deleteDoc(docRef)
-  }
+  const is_loaded = useSelector(state => state.bucket.is_loaded);
 
   useEffect(() => {
     dispatch(loadBucketFB());
@@ -83,6 +66,7 @@ function App() {
       <div>
         <button onClick={windowTop}>위로가기</button>
       </div>
+       {!is_loaded && <Spinner />}
     </div>
   );
 }

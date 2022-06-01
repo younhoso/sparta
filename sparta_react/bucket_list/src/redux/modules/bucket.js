@@ -6,8 +6,10 @@ const LOAD = 'bucket/LOAD'
 const CREATE = 'bucket/CREATE';
 const UPDATE = 'bucket/UPDATE';
 const DELETE = 'bucket/DELETE';
+const LOADED = 'bucket/LOADED';
 
 const initalState = {
+	is_loaded: false,
 	list: [
 		{text : "영화관 가기", completed: false},
 		{text : "매일 책읽기", completed: false},
@@ -33,6 +35,10 @@ export function deleteBucket(bucket_index) {
 	return {type: DELETE, bucket_index};
 }
 
+export function isLoaded(loaded) {
+	return {type: LOADED, loaded};
+}
+
 // Middlewares
 export const loadBucketFB = () => {
 	return async function (dispatch) {
@@ -47,9 +53,10 @@ export const loadBucketFB = () => {
 
 export const createBucketFB = (bucket) => {
 	return async function (dispatch) {
-	 const docRef	= await addDoc(collection(db, "bucket"), bucket);
-	 const bucket_data = {id: docRef.id, ...bucket};
-	 dispatch(createBucket(bucket_data))
+		dispatch(isLoaded(false));
+		const docRef	= await addDoc(collection(db, "bucket"), bucket);
+		const bucket_data = {id: docRef.id, ...bucket};
+		dispatch(createBucket(bucket_data))
 	}
 };
 
@@ -59,6 +66,7 @@ export const updateBucketFB = (bucket_id) => {
 			window.alert('ID가 없네요')
 			return;
 		}
+		dispatch(isLoaded(false))
 		const docRef = doc(db, "bucket", bucket_id);
 		await updateDoc(docRef, {completed: true});
 
@@ -93,12 +101,12 @@ export const deleteBucketFB = (bucket_id) => {
 export default function reducer(state = initalState, action = {}){
 	switch(action.type){
 		case LOAD: {
-			return {list: action.bucket_list}
+			return {list: action.bucket_list, is_loaded: true}
 		}
 
 		case CREATE: {
 			const new_bucket_list = [...state.list, action.bucket];
-			return {list : new_bucket_list};
+			return {...state, list : new_bucket_list, is_loaded: true};
 		}
 
 		case UPDATE: {
@@ -109,15 +117,20 @@ export default function reducer(state = initalState, action = {}){
 					return el
 				}
 			})
-			return {list: newBucketList}
+			return {...state, list: newBucketList, is_loaded: true}
 		}
 
 		case DELETE: {
 			const new_list = state.list.filter((el, idx) => {
 				return parseInt(action.bucket_index) !== idx;
 			});
-			return {list: new_list}
+			return {...state, list: new_list}
 		}
+
+		case LOADED: {
+			return {...state, is_loaded: action.loaded}
+		}
+
 		default: return state;
 	}
 };
