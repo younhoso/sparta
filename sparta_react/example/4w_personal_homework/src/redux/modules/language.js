@@ -3,6 +3,7 @@ import {collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc} from "fi
 
 // Actions Type
 const LOAD = "lang/LOAD";
+const CHECK = "lang/CHECK";
 const CREATE = "lang/CREATE";
 const UPDATE = "lang/UPDATE";
 const DELETE = "lang/DELETE";
@@ -12,12 +13,16 @@ export const loadLanguage = (l_list) => {
 	return {type: LOAD, l_list}
 }
 
+export const checkLanguage = (chek) => {
+	return {type: CHECK, chek}
+}
+
 export const createLanguage = (language) => {
 	return {type: CREATE, language};
 }
 
-export const updateLanguage = (language_idx, bloon) => {
-	return {type: UPDATE, language_idx, bloon}
+export const updateLanguage = (language_idx) => {
+	return {type: UPDATE, language_idx}
 }
 
 export const deleteLanguage = (language_idx) => {
@@ -35,6 +40,23 @@ export const loadLanguageFB = () => {
 		dispatch(loadLanguage(language_list));
 	}
 };
+
+export const checkLanguageFB = (language_id) => {
+	return async function (dispatch, getState) {
+		const _language_list = getState().language.list;
+		const docRef = doc(db, "language", language_id)
+		const language_index = _language_list.findIndex((b) => {
+			return b.id === language_id;
+		});
+
+		if(_language_list[language_index].completed){
+			await updateDoc(docRef, {completed: false})
+		} else {
+			await updateDoc(docRef, {completed: true})
+		}
+		dispatch(checkLanguage(language_index));
+	}
+}
 
 export const createLanguageFB = (language) => {
 	return async function (dispatch) {
@@ -55,7 +77,7 @@ export const updateLanguageFB = (language_id) => {
 		const language_index = _language_list.findIndex((b) => {
 			return b.id === language_id;
 		});
-		dispatch(updateLanguage(language_index, false))
+		dispatch(updateLanguage(language_index))
 		await updateDoc(docRef, {completed: false})
 	}
 }
@@ -90,6 +112,20 @@ const language = (state = initalState, action = {}) => {
 			return {list: action.l_list};
 		}
 
+		case CHECK: {
+			const newLanguageList = state.list.map((el, idx) => {
+				if(state.list[action.chek].id === el.id){
+					if(state.list[action.chek].completed){
+						return {...el, completed: false}
+					}else{
+						return {...el, completed: true}
+					}
+				}
+				return el
+			});
+			return {...state, list: newLanguageList}
+		}
+
 		case CREATE: {
 			const new_language_list = [...state.list, action.language]
 			return {list: new_language_list};
@@ -105,7 +141,7 @@ const language = (state = initalState, action = {}) => {
 			return {...state, list: newLanguageList}
 		}
 
-		case DELETE:{
+		case DELETE: {
 			const new_list = state.list.filter((el, idx) => {
 				return parseInt(action.language_idx) !== idx;
 			});

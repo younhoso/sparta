@@ -1,11 +1,12 @@
-import React, {useRef } from "react"
+import React, {useRef, useState } from "react"
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import {createLanguageFB} from '../redux/modules/language';
 
-const FormInput = ({nameTit}) => {
+const FormInput = ({editing, nameTit}) => {
+	const [newArr, setNewArr] = useState(["단어","병음","의미","예문","해석"])
 	const firstRef = useRef(null);
   const secondRef = useRef(null);
   const thirdRef = useRef(null);
@@ -13,7 +14,8 @@ const FormInput = ({nameTit}) => {
 	const fiveRef = useRef(null);
 	const history = useHistory();
 	const dispatch = useDispatch();
-
+	const param = useParams();
+	
 	const addLanguage = (e) => {
 		e.preventDefault()
 		const addData = {title: firstRef.current.value, pinyin: secondRef.current.value, meaning: thirdRef.current.value, example: forRef.current.value, commentary: fiveRef.current.value, completed: false}
@@ -25,26 +27,18 @@ const FormInput = ({nameTit}) => {
 		<Wrap>
 			<h2>단어 {nameTit}하기</h2>
 			<form>
-				<Inner>
-					<Label htmlFor="input-word">단어</Label>
-					<Input type="text" id="input-word" name="input-word" maxLength="8" ref={firstRef}/>
-				</Inner>
-				<Inner>
-					<Label htmlFor="input-pinyin">병음</Label>
-					<Input type="text"  id="input-pinyin" name="input-pinyin" maxLength="16" ref={secondRef}/>
-				</Inner>
-				<Inner>
-					<Label htmlFor="input-def">의미</Label>
-					<Input type="text" id="input-def" name="input-def" maxLength="20" ref={thirdRef}/>
-				</Inner>
-				<Inner>
-					<Label htmlFor="input-ex-cn">예문</Label>
-					<Input type="text" id="input-ex-cn" name="input-ex-cn" maxLength="30" ref={forRef}/>
-				</Inner>
-				<Inner>
-					<Label htmlFor="input-ex-ko">해석</Label>
-					<Input type="text" id="input-ex-ko" name="input-ex-ko" maxLength="30" ref={fiveRef}/>
-				</Inner>
+				{
+					newArr.map((el, idx) => {
+						if(editing === param.id){
+							return(
+								<Inner key={idx}>
+									<Label htmlFor="input-word">{el}</Label>
+									<Input type="text" value={"dse1"} name="input-word" maxLength="8" ref={firstRef}/>
+								</Inner>
+							)
+						}
+					})
+				}
 				<Btn onClick={addLanguage}>저장하기</Btn>
 			</form>
 		</Wrap>
