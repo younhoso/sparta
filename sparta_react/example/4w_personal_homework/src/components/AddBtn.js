@@ -21,7 +21,7 @@ const Alink = styled.a`
 	display: inline-block;
 	padding: 8px;
 	border-radius: 50%;
-	background-color: #000;
+	background-color: #444;
 	box-shadow: 0 0.1em 0.4em rgb(0 0 0 / 30%);
 	transition: transform 0.15s ease-in-out;
 	&:hover {

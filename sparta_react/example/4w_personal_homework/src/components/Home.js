@@ -1,29 +1,32 @@
-import { useEffect, useState } from "react";
 import styled from 'styled-components';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Card from './Card';
 import AddBtn from "./AddBtn";
 
 function Home() {
 	const words = useSelector((start) => start.language.list)
+	console.log(words)
+
 	return (
 		<div>
 			<Cards>
 				{
-					words.map((el) => {
-						const {title, pinyin} = el;
+					words.map((el, idx) => {
 						return(
-							<Card />
+							<Card key={idx} el_objs={el}/>
 						)
 					})
 				}
 			</Cards>
+			<AddBtn />
 		</div>
 	);
 }
 
 const Cards = styled.div`
+	max-width: 1200px;
+	margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;

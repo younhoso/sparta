@@ -1,64 +1,55 @@
-import React, { useState } from "react"
+import React, { forwardRef, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-
-import {checkLanguageFB, deleteBucketFB} from '../redux/modules/language';
 import menu from "../imgs/menu.svg"
 
-const Card = () => {
+import { updateLanguageFB, deleteBucketFB } from "../redux/modules/language";
+
+const Card = forwardRef(({ el_objs }, ref) => {
+	const { id, title, pinyin, definition, example_cn, example_ko, completed } = el_objs;
+	const el = useRef(null);
   const history	= useHistory()
 	const dispatch = useDispatch()
-	const my_lists = useSelector((state) => state.language.list)
-	const toggle = (e) => {
-		e.target.nextSibling.style.display = "block";
-	}
+
+	 // toggle 하는 함수
+	const toggleCheck = (objs) => {
+		dispatch(updateLanguageFB(objs));
+	};
+
+	const menuCheck = () => {
+		el.current.nextSibling.classList.add('on')
+	};
+	
 	return(
-		<Inner>
-			{my_lists.map((el, idx) => {
-				return(<Item className={el.completed ? "is_on" : null} key={idx}>
-					<H1>{el.title}</H1>
-					<span>{el.pinyin}</span>
-					<div>{el.meaning}</div>
-					<div style={{color: "rgb(9, 132, 227)"}}>{el.example}</div>
-					<div style={{color: "rgb(9, 132, 227)"}}>{el.commentary}</div>
-					<ImgMenu onClick={toggle} src={menu} />
+		<Item className={completed ? "is_on" : null} ref={ref}>
+			<div>
+					<H1>{title}</H1>
+					<span>[{pinyin}]</span>
+					<div style={{color: "rgb(9, 132, 227)"}}>{definition}</div>
+					<div style={{color: "rgb(9, 132, 227)"}}>{example_cn}</div>
+					<div style={{color: "rgb(9, 132, 227)"}}>{example_ko}</div>
+					<ImgMenu src={menu} onClick={menuCheck} ref={el}/>
 					<InnerBtn>
-						<Btn onClick={() => {
-							dispatch(checkLanguageFB(el.id))
-						}}>체크</Btn>
-						<Btn onClick={() => {
-							history.push(`/word/${el.id}/edit`);
-						}}>수정</Btn>
-						<Btn onClick={() => {
-							dispatch(deleteBucketFB(el.id))
-						}}>삭제</Btn>
+						<Btn onClick={() => {toggleCheck(el_objs)}}>체크</Btn>
+						<Btn>수정</Btn>
+						<Btn onClick={() => dispatch(deleteBucketFB(id))}>삭제</Btn>
 					</InnerBtn>
-				</Item>)
-			})}
-		</Inner>
+			</div>
+		</Item>
 	)
-};
+});
 
 const H1 = styled.h1`
 	font-size: 24px;
 	font-weight: 600;
-`
-
-const Inner = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	-webkit-box-pack: start;
-	justify-content: flex-start;
-	width: 100%;
-	max-width: 1200px;
-	margin: 60px auto 0px;
-	gap: 20px;
+	margin: 5px 0;
 `
 const ImgMenu = styled.img`
 	position: absolute;
 	top: 15px;
 	right: 10px;
+	cursor: pointer;
 `
 const InnerBtn = styled.div`
 	position: absolute;
@@ -69,11 +60,12 @@ const InnerBtn = styled.div`
 	border-radius: 10px;
 	background-color: #fff;
 	display: none;
+	&.on {
+		display: block;
+	}
 `
 const Btn = styled.button`
-	display: block;
 	padding: 8px;
-	border-bottom: 1px solid #000;
 	&:last-child {
 		border-bottom: none;
 	}
@@ -86,14 +78,16 @@ const Item = styled.div`
 	padding: 10px;
 	position: relative;
 	transition: transform 0.07s ease-in-out;
+	background-color: #fff;
 	&:hover {
 		transform: translateY(-6px);
 	}
 	&.is_on {
-		background-color: #000;
+		background-color: #444;
 		color: #fff;
 		${InnerBtn}{
-			background-color: #000;
+			background-color: #444;
+			border: 1px solid #fff;
 		}
 	}
 `

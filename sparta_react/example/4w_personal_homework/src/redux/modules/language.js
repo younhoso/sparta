@@ -3,33 +3,18 @@ import {collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc} from "fi
 
 // Actions Type
 const LOAD = "lang/LOAD";
-const CHECK = "lang/CHECK";
+const COMPLETE = "lang/COMPLETE"
 const CREATE = "lang/CREATE";
 const UPDATE = "lang/UPDATE";
 const DELETE = "lang/DELETE";
 
 // Action Creators
-export const loadLanguage = (l_list) => {
-	return {type: LOAD, l_list}
-}
+export const loadLanguage = (all_list) => ({type: LOAD, all_list})
+export const createLanguage = (data) => ({type: CREATE, data})
+export const updateLanguage = (id) => ({type: COMPLETE, id})
+export const deleteLanguage = (id) => ({type: DELETE, id})
 
-export const checkLanguage = (chek) => {
-	return {type: CHECK, chek}
-}
-
-export const createLanguage = (language) => {
-	return {type: CREATE, language};
-}
-
-export const updateLanguage = (language_idx) => {
-	return {type: UPDATE, language_idx}
-}
-
-export const deleteLanguage = (language_idx) => {
-	return {type: DELETE, language_idx};
-}
-
-// Middlewares
+// 로딩 함수
 export const loadLanguageFB = () => {
 	return async function (dispatch) {
 		const language_data = await getDocs(collection(db, "language"));
@@ -41,89 +26,50 @@ export const loadLanguageFB = () => {
 	}
 };
 
-export const checkLanguageFB = (language_id) => {
-	return async function (dispatch, getState) {
-		const _language_list = getState().language.list;
-		const docRef = doc(db, "language", language_id)
-		const language_index = _language_list.findIndex((b) => {
-			return b.id === language_id;
-		});
-
-		if(_language_list[language_index].completed){
-			await updateDoc(docRef, {completed: false})
-		} else {
-			await updateDoc(docRef, {completed: true})
-		}
-		dispatch(checkLanguage(language_index));
-	}
-}
-
+// 새로운 단어 등록 함수
 export const createLanguageFB = (language) => {
 	return async function (dispatch) {
 		const docRef = await addDoc(collection(db, "language"), language)
-		const language_data = {id: docRef.id, ...language};
-	  dispatch(createLanguage(language_data))
+		const data = {id: docRef.id, ...language};
+	  dispatch(createLanguage(data))
 	}
 };
 
-export const updateLanguageFB = (language_id) => {
-	return async function (dispatch, getState) {
-		if(!language_id){
-			window.alert('ID가 없네요')
-			return;
-		}
-		const docRef = doc(db, "language", language_id)
-		const _language_list = getState().language.list;
-		const language_index = _language_list.findIndex((b) => {
-			return b.id === language_id;
-		});
-		dispatch(updateLanguage(language_index))
-		await updateDoc(docRef, {completed: false})
+// 토글 함수
+export const updateLanguageFB = (datas) => {
+	return async function (dispatch) {
+		const docRef = doc(db, "language", datas.id)
+		await updateDoc(docRef, {completed: !datas.completed});
+		dispatch(updateLanguage(datas.id))
 	}
 }
 
-export const deleteBucketFB = (language_id) => {
-	return async function(dispatch, getState) {
-		if(!language_id){
-			window.alert('ID가 없네요')
-			return;
-		}
-		const docRef = doc(db, "language", language_id);
+// 단어 삭제 함수
+export const deleteBucketFB = (id) => {
+	return async function(dispatch) {
+		const docRef = doc(db, "language", id);
 		await deleteDoc(docRef)
-		const _language_list = getState().language.list;
-		const language_index = _language_list.findIndex((b) => {
-			return b.id === language_id;
-		});
-		dispatch(deleteLanguage(language_index))
+		dispatch(deleteLanguage(id))
 	}
 }
 
 
 const initalState = {
-	list: [
-		{title: "단어1", pinyin: "병음", meaning: "의미", example: "예문", commentary: "해석", completed: false}
-	]
+	list: []
 }
 
 // Reducer
 const language = (state = initalState, action = {}) => {
 	switch(action.type) {
 		case LOAD: {
-			return {list: action.l_list};
+			return {...state, list: action.all_list};
 		}
 
-		case CHECK: {
-			const newLanguageList = state.list.map((el, idx) => {
-				if(state.list[action.chek].id === el.id){
-					if(state.list[action.chek].completed){
-						return {...el, completed: false}
-					}else{
-						return {...el, completed: true}
-					}
-				}
-				return el
-			});
-			return {...state, list: newLanguageList}
+		case COMPLETE:{
+      const new_word_list = state.list.map((el) =>
+				el.id === action.id ? { ...el, completed: !el.completed } : el
+      );
+      return { ...state, list: new_word_list};
 		}
 
 		case CREATE: {
@@ -132,21 +78,15 @@ const language = (state = initalState, action = {}) => {
 		}
 
 		case UPDATE: {
-			const newLanguageList = state.list.map((el, idx) => {
-				if(state.list[action.language_idx].id === el.id){
-					return {...el, completed: true}
-				}
-				return el
-			})
+			const newLanguageList = state.list.map((el) => 
+				action.id === el.id ? {...el, completed: !el.completed} : el
+			)
 			return {...state, list: newLanguageList}
 		}
 
 		case DELETE: {
-			const new_list = state.list.filter((el, idx) => {
-				return parseInt(action.language_idx) !== idx;
-			});
-
-			return {list: new_list} ;
+			const new_list = state.list.filter((el) => el.id !== action.id);
+			return {...state, list: new_list} ;
 		}
 		default:
 			return state;
