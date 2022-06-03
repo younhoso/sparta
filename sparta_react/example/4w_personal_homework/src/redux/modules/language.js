@@ -73,7 +73,7 @@ const language = (state = initalState, action = {}) => {
 		}
 
 		case CREATE: {
-			const new_language_list = [...state.list, action.language]
+			const new_language_list = [...state.list, action.data]
 			return {list: new_language_list};
 		}
 
