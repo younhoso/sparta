@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import Card from './Card';
 import AddBtn from "./AddBtn";
 
 function Home() {
 	const words = useSelector((start) => start.language.list)
-	console.log(words)
 
 	return (
 		<div>

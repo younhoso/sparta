@@ -1,5 +1,5 @@
 import React, { forwardRef, useRef } from "react"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import menu from "../imgs/menu.svg"
@@ -9,7 +9,6 @@ import { updateLanguageFB, deleteBucketFB } from "../redux/modules/language";
 const Card = forwardRef(({ el_objs }, ref) => {
 	const { id, title, pinyin, definition, example_cn, example_ko, completed } = el_objs;
 	const el = useRef(null);
-  const history	= useHistory()
 	const dispatch = useDispatch()
 
 	 // toggle 하는 함수
