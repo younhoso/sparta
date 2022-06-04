@@ -11,13 +11,10 @@ function Detail() {
 	});
 
 	const handleChange = (name, value) => {
-		setValues(function(prevValues) {
-			console.log(prevValues)
-			return{
-				...prevValues,
-				[name]: value
-			}
-		});
+		setValues((prevValues) => ({
+			...prevValues,
+			[name]: value
+		}));
 	}
 
 	return (
