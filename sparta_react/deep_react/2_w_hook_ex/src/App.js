@@ -1,9 +1,10 @@
-function App() {
+import MyComponents from './MyComponents';
+
+const App = () => {
   return (
-    <div className="App">
-      
+    <div>
+      <MyComponents />
     </div>
   );
 }
-
 export default App;
