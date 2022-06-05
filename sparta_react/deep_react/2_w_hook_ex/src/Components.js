@@ -12,9 +12,7 @@ export const Button = ({ input_ref, setText }) => {
   return (
     <button
       onClick={() => {
-        // console.log(input_ref.current.value);
-        setText(input_ref.current.value);
-        input_ref.current.value = "";
+        setText(input_ref);
       }}
     >
       완성

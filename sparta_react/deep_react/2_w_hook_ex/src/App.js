@@ -1,10 +1,12 @@
 import React from "react";
 
 import { TextArea, Button, Input } from "./Components";
+import useCompletes from "./useCompletes";
 
 function App() {
-  const [text, setText] = React.useState("");
+  const [text, setText] = useCompletes();
   const input_ref = React.useRef(null);
+  
   return (
     <div className="App" style={{ display: "flex", gap: 10 }}>
       <div>
