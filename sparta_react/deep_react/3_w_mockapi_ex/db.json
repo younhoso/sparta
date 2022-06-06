@@ -1,0 +1,24 @@
+{
+  "sleep_times": [
+    {
+      "id": 1,
+      "day": "월",
+      "sleep_time": "10:00"
+    },
+    {
+      "id": 2,
+      "day": "화",
+      "sleep_time": "10:00"
+    },
+    {
+      "id": 3,
+      "day": "수",
+      "sleep_time": "10:00"
+    },
+    {
+      "day": "목",
+      "sleep_time": "10:00",
+      "id": 4
+    }
+  ]
+}
