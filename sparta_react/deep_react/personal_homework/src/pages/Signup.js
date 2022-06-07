@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { collection, addDoc } from "firebase/firestore";
-import { auth, db} from "./shared/firebase";
+import { auth, db} from "../shared/firebase";
 
 const Signup = () => {
 	const [id, setId] = useState("");
