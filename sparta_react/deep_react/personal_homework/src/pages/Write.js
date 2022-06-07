@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components"
 
+
 const Write = () => {
 	const [values, setValues] = useState({
 		nameFile: "파일선택",
@@ -38,9 +39,9 @@ const Write = () => {
 			<input className="upload-name" value={values.nameFile} disabled="disabled" readOnly /> 
 			<input type="file" accept="image/png, image/jpeg" id="file" onChange={uploadChange}/>
 			<PreviewWrap>
-						<div className='PreView'>
-							{!preview ? <p>여기에 사진이<br/> 미리보기 됩니다.</p> : <img className="bgImg" src={preview} />}                     
-						</div>
+				<div className='PreView'>
+					{!preview ? <p>여기에 사진이<br/> 미리보기 됩니다.</p> : <img className="bgImg" src={preview} />}                     
+				</div>
 			</PreviewWrap>
 			<WriteTxt>
 				<label>
