@@ -1,21 +1,40 @@
 import { useState } from "react";
+import { auth, db } from "../shared/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { getDocs, where, query, collection } from "firebase/firestore"
 import styled from "styled-components"
-import { useDispatch } from "react-redux";
 
 const Login = () => {
+	const [id, setId] = useState("");
+	const [pwd, setPwd] = useState("");
+	
+	const loginFu = async () => {
+		const user = await signInWithEmailAndPassword(auth, id, pwd)
+		const user_docs = await getDocs(
+			query(collection(db, "users"), where("user_id", "==", user.user.email))
+		);
+		
+		user_docs.forEach((el) => {
+			const {user_id, name} = el.data(); //로그인 사용자 정보 확인
 
+		})
+	}
 	return (
 		<LoginInner>
 				<H2>로그인</H2>
 				<label>
 					<p>아이디</p>
-					<Input type="text" placeholder="아이디를 입력해주세용!" value="" />
+					<Input type="text" placeholder="아이디(이메일)를 입력해주세용!" onChange={(e) => {
+						setId(e.target.value)
+					}}/>
 				</label>
 				<label>
 					<p>비밀번호</p>
-					<Input type="text" placeholder="비밀번호를 입력해주세용!" value="" />
+					<Input type="password" placeholder="비밀번호를 입력해주세용!" onChange={(e) => {
+						setPwd(e.target.value)
+					}}/>
 				</label>
-				<Btn>로그인하기</Btn>
+				<Btn onClick={loginFu}>로그인하기</Btn>
 		</LoginInner>
 	);
 }

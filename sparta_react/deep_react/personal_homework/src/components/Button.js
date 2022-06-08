@@ -1,15 +1,40 @@
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../shared/firebase";
 import imgsrc from "../imgs/plus.svg"
+import { useEffect, useState } from "react";
 
 const Button = () => {
 	const navigate = useNavigate();
+	const [is_login, setIsLogin] = useState(false);
+	
+	const loginCheck = async (user) => {
+		if(user){
+			setIsLogin(true);
+		} else {
+			setIsLogin(false);
+		}
+	};
+
+	useEffect(() => {
+		onAuthStateChanged(auth, loginCheck)
+	},[])
+
 	return (
-		<ElButton onClick={() => {
-			navigate("/write")
-		}}>
-			<img src={imgsrc} />
-		</ElButton>
+		<>
+		{ is_login
+			? (
+				<ElButton onClick={() => {
+					navigate("/write")
+				}}>
+					<img src={imgsrc} />
+				</ElButton>
+			) 
+			: (null)
+		}
+		</>
+		
 	);
 }
 

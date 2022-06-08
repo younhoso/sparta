@@ -1,20 +1,47 @@
 import styled from "styled-components"
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { auth } from "../shared/firebase";
 
 const Header = () => {
 	const navigate = useNavigate();
+	const [is_login, setIsLogin] = useState(false);
+
+  const loginCheck = async (user) => {
+    if(user){
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+		navigate("/")
+  };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, loginCheck)
+  },[])
+
 	return (
 		<HeaderInner>
 			<div>
 				<a href="/">Home</a>
-				<div>
-					<Btn onClick={() => {
-						navigate("/signup")
-					}}>회원가입</Btn>
-					<Btn onClick={() => {
-						navigate("/login")
-					}}>로그인</Btn>
-				</div>
+				{ is_login 
+					? (<div>
+						  <Btn>내정보</Btn>
+							<Btn>알림</Btn>
+							<Btn onClick={() => signOut(auth)}>로그아웃</Btn>
+						</div>) 
+					: (
+						<div>
+							<Btn onClick={() => {
+								navigate("/signup")
+							}}>회원가입</Btn>
+							<Btn onClick={() => {
+								navigate("/login")
+							}}>로그인</Btn>
+						</div>
+					)
+				}
 			</div>
 		</HeaderInner>
 	);

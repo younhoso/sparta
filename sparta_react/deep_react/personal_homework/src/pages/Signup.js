@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styled from "styled-components"
 import {emailCheck} from '../shared/common';
+import { auth, db } from "../shared/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Signup = () => {
 	const [id, setId] = useState("");
@@ -8,7 +11,7 @@ const Signup = () => {
 	const [pwd_check, setPwdCheck] = useState("");
 	const [user_name, setUserName] = useState("");
 
-	const signupFu = () => {
+	const signupFu = async () => {
 		if (!id || !pwd || !user_name) {
       window.alert("아이디, 패스워드, 닉네임을 모두 입력해주세요!");
       return;
@@ -24,6 +27,11 @@ const Signup = () => {
       return;
     }
 
+		const user = await createUserWithEmailAndPassword(auth, id, pwd);
+		await addDoc(collection(db, "users"), {
+			user_id: user.user.email,
+			name: user_name
+		});
   }
 
 
