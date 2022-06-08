@@ -25,24 +25,25 @@ export const loadStagramFB = () => {
 // 컨텐츠 등록 함수
 export const createStagramFB = (stagram) => {
 	return async function (dispatch) {
+		const {values, setIsSubmitting, navigate} = stagram;
 		const uploded_file = await uploadBytes(
-      ref(getStorage(), `images/${stagram.values.imgFile.name}`), stagram.values.imgFile
+      ref(getStorage(), `images/${values.imgFile.name}`), values.imgFile
     );
 		const file_url = await getDownloadURL(uploded_file.ref)
 
 		try {
-			stagram.setIsSubmitting(true);
+			setIsSubmitting(true);
 			const docRef = await addDoc(collection(db, "posts"), {
 				image_url: file_url,
-				text: stagram.values.content
+				text: values.content
 			});
 			const data = {id: docRef.id, ...stagram};
 			dispatch(createStagram(data))
 		} catch (error) {
 			console.log(error)
 		} finally {
-			stagram.setIsSubmitting(false);
-			stagram.navigate("/")
+			setIsSubmitting(false);
+			navigate("/")
 		}
 	}
 }
