@@ -1,17 +1,16 @@
 import styled from 'styled-components';
 
-const Card = () => {
+const Card = ({image_url, text}) => {
 	return (
 		<CardInner>
-			<CardAtag href='#0'>
-				<Thumnail></Thumnail>
+			<CardAtag href="#0">
+				<Thumnail style={{backgroundImage: `url(${image_url})`}}></Thumnail>
 			</CardAtag>
 			<TitInner>
 				<div>
 					<span className='like'>좋아요 6</span>
 					<span className='comment'>댓글 7</span>
 				</div>
-				
 				<div>하트</div>
 			</TitInner>
 		</CardInner>

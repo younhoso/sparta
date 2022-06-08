@@ -1,10 +1,11 @@
-import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../shared/firebase"
 import styled from "styled-components"
+// import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// import { collection, addDoc } from "firebase/firestore";
+// import { db } from "../shared/firebase"
+import {createStagramFB} from "../redux/modules/stagram"
+import { useDispatch } from "react-redux";
 
 const INITIAL_VALUES = {
 	nameFile: "파일선택",
@@ -16,8 +17,9 @@ const Write = () => {
 	const [values, setValues] = useState(INITIAL_VALUES);
 	const [preview, setPreview] = useState();
 	const [isSubmitting, setIsSubmitting] = useState(true);
-	const storage = getStorage();
+	// const storage = getStorage();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const handleChange = (name, value) => {
 		setValues((prevValues) => ({
@@ -53,22 +55,8 @@ const Write = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const uploded_file = await uploadBytes(
-      ref(storage, `images/${values.imgFile.name}`), values.imgFile
-    );
-		const file_url = await getDownloadURL(uploded_file.ref)
-		try {
-			setIsSubmitting(true);
-			await addDoc(collection(db, "posts"), {
-				image_url: file_url,
-				text: values.content
-			});
-		} catch (error) {
-			console.log(error)
-		} finally {
-			setIsSubmitting(false);
-			navigate("/")
-		}
+		const new_obj = { values, setIsSubmitting, navigate };
+		dispatch(createStagramFB(new_obj));
 	}	
 
 	useEffect(() => {

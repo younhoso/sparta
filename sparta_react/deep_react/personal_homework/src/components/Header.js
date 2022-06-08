@@ -63,7 +63,7 @@ const HeaderInner = styled.div`
 `
 
 const Btn = styled.button`
-	width: 100px;
+	width: 15vw;
 	height: 30px;
 	line-height: 30px;
 	margin: 0 10px;
