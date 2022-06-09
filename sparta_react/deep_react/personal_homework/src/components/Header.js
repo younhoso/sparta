@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth, apiKey } from "../shared/firebase";
+import { apiKey } from "../shared/firebase";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutFB } from "../redux/modules/user";
 
@@ -9,11 +8,9 @@ const Header = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const is_login = useSelector((state) => state.user.is_login);
-	console.log(is_login)
 
 	const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
 	const is_session = sessionStorage.getItem(_session_key)? true : false;
-	console.log(is_session);
 
 	return (
 		<HeaderInner>
@@ -42,10 +39,10 @@ const Header = () => {
 }
 
 const HeaderInner = styled.div`
-	border-bottom: 1px solid #e4e8eb;
+	border-bottom: 1px solid #cccccc;
 	margin-bottom: 20px;
 	& > div {
-		max-width: 900px; 
+		max-width: 620px; 
 		width: 100%;
 		margin: 0 auto;
 		padding: 20px;
@@ -57,7 +54,7 @@ const HeaderInner = styled.div`
 `
 
 const Btn = styled.button`
-	width: 15vw;
+	width: 65px;
 	height: 30px;
 	line-height: 30px;
 	margin: 0 10px;

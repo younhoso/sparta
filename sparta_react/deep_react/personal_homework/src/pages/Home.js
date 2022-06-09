@@ -23,10 +23,10 @@ const Home = () => {
 		<HomeWrap>
 			{
 				datas.map((el, idx) => {
-					if(el.user_id === user_info?.id){
-						return <Card id={el.id} image_url={el.image_url} key={idx} is_me/>
+					if(el.id === user_info?.id){
+						return <Card id={user_info.uid} image_url={el.image_url} key={idx} is_me/>
 					} else {
-						return <Card id={el.id} image_url={el.image_url} key={idx}/>
+						return <Card id={user_info.uid} image_url={el.image_url} key={idx}/>
 					}
 					
 				})
@@ -36,7 +36,7 @@ const Home = () => {
 }
 
 const HomeWrap = styled.div`
-	max-width: 900px; 
+	max-width: 620px; 
 	width: 100%;
 	margin: 0 auto;
 	padding: 0 20px;

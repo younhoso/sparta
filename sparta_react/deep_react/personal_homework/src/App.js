@@ -9,7 +9,7 @@ import Button from "./components/Button"
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{backgroundColor: "#efefef"}}>
       <Header />
         <Routes>
           <Route path="/" exact element={<Home />} />

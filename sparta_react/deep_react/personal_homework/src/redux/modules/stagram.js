@@ -30,19 +30,19 @@ export const createStagramFB = (stagram) => {
       ref(getStorage(), `images/${values.imgFile.name}`), values.imgFile
     );
 		const file_url = await getDownloadURL(uploded_file.ref)
-		const info = JSON.parse(window.localStorage.getItem("user_info"))
-		console.log(getState())
+		const info = getState().user.user;
 		const all_data = {
 			id: info.id,
-			name: info.name,
-			user_id: info.user_id,
+			name: info.user_name,
+			user_id: info.uid,
 			image_url: file_url,
 			text: values.content
 		}
 		try {
 			setIsSubmitting(true);
 			const docRef = await addDoc(collection(db, "posts"), all_data); //파이어베이스에 저장
-			const data = {id: docRef.id, ...stagram, ...all_data}; // 전역 story에 저장할 용도
+			const data = {id: docRef.id, ...all_data}; // 전역 story에 저장할 용도
+			console.log(data)
 			dispatch(createStagram(data))
 			navigate("/")
 		} catch (error) {

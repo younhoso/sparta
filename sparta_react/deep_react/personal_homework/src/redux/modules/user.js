@@ -1,6 +1,6 @@
 import {auth, db} from "../../shared/firebase";
 import {collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, where, query} from "firebase/firestore"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, onAuthStateChanged } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { setCookie, getCookie, deleteCookie } from "../../shared/Cookie";
 
 // Actions Type
@@ -43,22 +43,24 @@ export const loginFB = (id, pwd, navigate) => {
 export const signupFB = ({id, pwd, user_name}, navigate) => {
 	return async function (dispatch) {
 		const user = await createUserWithEmailAndPassword(auth, id, pwd);
-		const docRef = await addDoc(collection(db, "users"), {
+		await addDoc(collection(db, "users"), {
 			user_id: user.user.email,
-			displayName: user_name
+			user_name: user_name
 		});
-		const data = {
-			id: docRef.id,
-			user_profile: "",
-			displayName: user_name,
-			uid: user.user.uid,
-		};
-		try {
+		await updateProfile(auth.currentUser, {
+			displayName: user_name
+		}).then(() => {
+			const data = {
+				id: id,
+				user_name: user_name,
+				uid: user.user.uid,
+				user_profile: "",
+			};
 			dispatch(userSetUser(data))
 			navigate("/")
-		} catch(error){
+		}).catch((error) => {
 			console.log(error)
-		}
+		});
 	}
 }
 
@@ -72,9 +74,7 @@ export const loginCheckFB = () => {
 				uid: user.uid,
 			};
 			if (user) {
-				dispatch(
-					userSetUser(data)
-				)
+				dispatch(userSetUser(data))
 			}else{
 				dispatch(userLogOut());
 			}
