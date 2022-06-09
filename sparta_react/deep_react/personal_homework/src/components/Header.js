@@ -1,35 +1,29 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { useEffect, useState } from "react";
-import { auth } from "../shared/firebase";
+import { signOut } from "firebase/auth";
+import { auth, apiKey } from "../shared/firebase";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutFB } from "../redux/modules/user";
 
 const Header = () => {
 	const navigate = useNavigate();
-	const [is_login, setIsLogin] = useState(false);
+	const dispatch = useDispatch();
+	const is_login = useSelector((state) => state.user.is_login);
+	console.log(is_login)
 
-  const loginCheck = async (user) => {
-    if(user){
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-    }
-		navigate("/")
-  };
-
-  useEffect(() => {
-    onAuthStateChanged(auth, loginCheck)
-  },[])
+	const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
+	const is_session = sessionStorage.getItem(_session_key)? true : false;
+	console.log(is_session);
 
 	return (
 		<HeaderInner>
 			<div>
 				<a href="/">Home</a>
-				{ is_login 
+				{ is_login && is_session
 					? (<div>
 						  <Btn>내정보</Btn>
 							<Btn>알림</Btn>
-							<Btn onClick={() => signOut(auth)}>로그아웃</Btn>
+							<Btn onClick={() => dispatch(logoutFB(navigate))}>로그아웃</Btn>
 						</div>) 
 					: (
 						<div>

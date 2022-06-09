@@ -4,6 +4,9 @@ export const emailCheck = (email) => {
 }
 export const localStorage = (name, value) => {
 	if(typeof(Storage) !== "undefined"){
-		window.localStorage.setItem(name, value)
+		window.localStorage.setItem(name, JSON.stringify(value))
 	}
+}
+export const localStorageGet = (name, value) => {
+	return JSON.parse(window.localStorage.getItem("user_info"))
 }

@@ -6,13 +6,15 @@ const Card = ({id, image_url, is_me, text}) => {
 	return (
 		<CardInner>
 			<CardAtag href="#0">
-				{is_me && (
-					<button width="auto" margin="4px" padding="4px" onClick={() => {
-						navigate(`/write/${id}`)
-					}}>
-						수정
-					</button>
-				)}
+				{ 
+					is_me && (
+						<button width="auto" margin="4px" padding="4px" onClick={() => {
+							navigate(`/write/${id}`)
+						}}>
+							수정
+						</button>
+					)
+				}
 				<Thumnail style={{backgroundImage: `url(${image_url})`}}></Thumnail>
 			</CardAtag>
 			<TitInner>

@@ -26,18 +26,17 @@ export const loadStagramFB = () => {
 export const createStagramFB = (stagram) => {
 	return async function (dispatch, getState) {
 		const {values, setIsSubmitting, navigate} = stagram;
-		console.log(getState())
 		const uploded_file = await uploadBytes(
       ref(getStorage(), `images/${values.imgFile.name}`), values.imgFile
     );
 		const file_url = await getDownloadURL(uploded_file.ref)
-		// const user_info = {
-    //   user_name: _user.user_name,
-    //   user_id: _user.uid
-    // };
+		const info = JSON.parse(window.localStorage.getItem("user_info"))
 		try {
 			setIsSubmitting(true);
 			const docRef = await addDoc(collection(db, "posts"), {
+				id: info.id,
+				name: info.name,
+				user_id: info.user_id,
 				image_url: file_url,
 				text: values.content
 			});
@@ -45,7 +44,8 @@ export const createStagramFB = (stagram) => {
 			dispatch(createStagram(data))
 			navigate("/")
 		} catch (error) {
-			console.log(error)
+			window.alert("앗! 이미지 업로드에 문제가 있어요!");
+			console.log("앗! 이미지 업로드에 문제가 있어요!", error);
 		} finally {
 			setIsSubmitting(false);
 		}

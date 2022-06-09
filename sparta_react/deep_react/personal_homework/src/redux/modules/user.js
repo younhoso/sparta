@@ -1,7 +1,8 @@
 import {auth, db} from "../../shared/firebase";
 import {collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, where, query} from "firebase/firestore"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, onAuthStateChanged } from "firebase/auth";
 import { localStorage } from "../../shared/common";
+import { setCookie, getCookie, deleteCookie } from "../../shared/Cookie";
 
 // Actions Type
 const LOG_OUT = "LOG_OUT";
@@ -14,7 +15,7 @@ export const userGetUser = (user) => ({type: GET_USER, user})
 export const userSetUser = (user) => ({type: SET_USER, user})
 
 // 로그인 함수 middleware
-export const loginFB = (id, pwd) => {
+export const loginFB = (id, pwd, navigate) => {
 	return async function (dispatch) {
 		setPersistence(auth, browserSessionPersistence)
 		.then(async() => {
@@ -26,8 +27,9 @@ export const loginFB = (id, pwd) => {
 			user_docs.forEach((el) => {
 				user_list = [...user_list, {id:el.id, ...el.data()}]; //로그인 사용자 정보 확인
 			});
-			console.log(user_list)
+			localStorage("user_info", ...user_list)
 			dispatch(userSetUser(user_list));
+			navigate("/")
 		})
 		.catch((error) => {
 			const errorCode = error.code;
@@ -63,11 +65,32 @@ export const signupFB = ({id, pwd, user_name}, navigate) => {
 }
 
 // 로그인 체크 함수 middleware
+export const loginCheckFB = () => {
+	return function (dispatch) {
+		onAuthStateChanged(auth, (user) => {
+			const data = {
+				id: user.email, 
+				user_name: user.displayName,
+				uid: user.uid,
+			};
+			if (user) {
+				dispatch(
+					userSetUser(data)
+				)
+			}else{
+				dispatch(userLogOut());
+			}
+		});
+	}
+}
 
 // 로그아웃 함수 middleware
-export const logoutFB = (stagram) => {
-	return async function (disabled) {
-
+export const logoutFB = (navigate) => {
+	return async function (dispatch) {
+		auth.signOut().then(() => {
+      dispatch(userLogOut());
+      navigate("/");
+    });
 	}
 }
 
@@ -81,15 +104,17 @@ const initialState = {
 const handleUser = (state = initialState, action = {}) => {
 	switch(action.type) {
 		case SET_USER: {
+			setCookie("is_login", "success");
 			return {...state, user: action.user, is_login: true};
 		}
 
 		case LOG_OUT: {
-			return state
+			deleteCookie("is_login");
+			return {...state, user: null, is_login: false}
 		}
 
 		case GET_USER: {
-			return {...state};
+			return {...state, user: action.user, is_login: true};
 		}
 
 		default: 
