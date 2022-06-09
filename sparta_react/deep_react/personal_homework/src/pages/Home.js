@@ -10,7 +10,6 @@ const Home = () => {
 	const dispatch = useDispatch();
 	const datas = useSelector((state) => state.stagram.list);
 	const user_info = useSelector((state) => state.user.user);
-
 	const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
 	const is_session = sessionStorage.getItem(_session_key)? true : false;
 

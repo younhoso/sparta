@@ -1,7 +1,6 @@
 import {auth, db} from "../../shared/firebase";
 import {collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, where, query} from "firebase/firestore"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, onAuthStateChanged } from "firebase/auth";
-import { localStorage } from "../../shared/common";
 import { setCookie, getCookie, deleteCookie } from "../../shared/Cookie";
 
 // Actions Type
@@ -11,7 +10,6 @@ const SET_USER = "SET_USER";
 
 // Action Creators
 export const userLogOut = (user) => ({type: LOG_OUT, user})
-export const userGetUser = (user) => ({type: GET_USER, user})
 export const userSetUser = (user) => ({type: SET_USER, user})
 
 // 로그인 함수 middleware
@@ -23,11 +21,11 @@ export const loginFB = (id, pwd, navigate) => {
 			const user_docs = await getDocs(
 				query(collection(db, "users"), where("user_id", "==", user.user.email))
 			);
+
 			let user_list = [];
 			user_docs.forEach((el) => {
 				user_list = [...user_list, {id:el.id, ...el.data()}]; //로그인 사용자 정보 확인
 			});
-			localStorage("user_info", ...user_list)
 			dispatch(userSetUser(user_list));
 			navigate("/")
 		})
@@ -47,12 +45,12 @@ export const signupFB = ({id, pwd, user_name}, navigate) => {
 		const user = await createUserWithEmailAndPassword(auth, id, pwd);
 		const docRef = await addDoc(collection(db, "users"), {
 			user_id: user.user.email,
-			name: user_name
+			displayName: user_name
 		});
 		const data = {
-			id: docRef.id, 
-			user_name: user_name,
+			id: docRef.id,
 			user_profile: "",
+			displayName: user_name,
 			uid: user.user.uid,
 		};
 		try {

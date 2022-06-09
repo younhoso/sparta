@@ -52,7 +52,7 @@ const Write = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const new_obj = { values, setIsSubmitting, navigate, _user };
+		const new_obj = { values, setIsSubmitting, navigate };
 		dispatch(createStagramFB(new_obj));
 	}	
 

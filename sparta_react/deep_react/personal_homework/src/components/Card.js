@@ -1,14 +1,18 @@
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Card = ({id, image_url, is_me, text}) => {
+const Card = ({id, image_url, is_me, name, text}) => {
 	const navigate = useNavigate()
+	const user_info = useSelector((state) => state.user.user);
+	console.log(user_info)
 	return (
 		<CardInner>
+			{/* <div className="user_name">{user_info.user_name}</div> */}
 			<CardAtag href="#0">
 				{ 
 					is_me && (
-						<button width="auto" margin="4px" padding="4px" onClick={() => {
+						<button onClick={() => {
 							navigate(`/write/${id}`)
 						}}>
 							수정
@@ -30,10 +34,28 @@ const Card = ({id, image_url, is_me, text}) => {
 const CardInner = styled.div`
 	width: 100%;
 	margin-bottom: 30px;
+	position: relative;
+	& .user_name {
+		position: absolute;
+		top: 10px;
+	}
 `
 const CardAtag = styled.a`
 	display: block;
 	background: 0 0 !important;
+	text-align: right;
+	& button {
+		width: 6vw;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+	}
 `
 const Thumnail = styled.span`
 	display: block;

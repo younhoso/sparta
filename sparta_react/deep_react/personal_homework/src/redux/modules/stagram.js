@@ -31,16 +31,18 @@ export const createStagramFB = (stagram) => {
     );
 		const file_url = await getDownloadURL(uploded_file.ref)
 		const info = JSON.parse(window.localStorage.getItem("user_info"))
+		console.log(getState())
+		const all_data = {
+			id: info.id,
+			name: info.name,
+			user_id: info.user_id,
+			image_url: file_url,
+			text: values.content
+		}
 		try {
 			setIsSubmitting(true);
-			const docRef = await addDoc(collection(db, "posts"), {
-				id: info.id,
-				name: info.name,
-				user_id: info.user_id,
-				image_url: file_url,
-				text: values.content
-			});
-			const data = {id: docRef.id, ...stagram};
+			const docRef = await addDoc(collection(db, "posts"), all_data); //파이어베이스에 저장
+			const data = {id: docRef.id, ...stagram, ...all_data}; // 전역 story에 저장할 용도
 			dispatch(createStagram(data))
 			navigate("/")
 		} catch (error) {
@@ -68,6 +70,7 @@ const stagram = (state = initalState, action = {}) => {
 		}
 
 		case CREATE: {
+			console.log(action)
 			const new_stagram_list = [...state.list, action.data]
 			return {list: new_stagram_list};
 		}
