@@ -1,23 +1,25 @@
 import { useState } from "react";
-import { auth, db } from "../shared/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { getDocs, where, query, collection } from "firebase/firestore"
+import { loginFB } from "../redux/modules/user"
+
 import styled from "styled-components"
+import { useDispatch } from "react-redux";
 
 const Login = () => {
 	const [id, setId] = useState("");
 	const [pwd, setPwd] = useState("");
+	const dispatch = useDispatch();
 	
 	const loginFu = async () => {
-		const user = await signInWithEmailAndPassword(auth, id, pwd)
-		const user_docs = await getDocs(
-			query(collection(db, "users"), where("user_id", "==", user.user.email))
-		);
+		dispatch(loginFB(id, pwd))
+		// const user = await signInWithEmailAndPassword(auth, id, pwd)
+		// const user_docs = await getDocs(
+		// 	query(collection(db, "users"), where("user_id", "==", user.user.email))
+		// );
 		
-		user_docs.forEach((el) => {
-			const {user_id, name} = el.data(); //로그인 사용자 정보 확인
+		// user_docs.forEach((el) => {
+		// 	const {user_id, name} = el.data(); //로그인 사용자 정보 확인
 
-		})
+		// })
 	}
 	return (
 		<LoginInner>

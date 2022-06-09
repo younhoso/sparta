@@ -1,15 +1,24 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Card = ({image_url, text}) => {
+const Card = ({id, image_url, is_me, text}) => {
+	const navigate = useNavigate()
 	return (
 		<CardInner>
 			<CardAtag href="#0">
+				{is_me && (
+					<button width="auto" margin="4px" padding="4px" onClick={() => {
+						navigate(`/write/${id}`)
+					}}>
+						수정
+					</button>
+				)}
 				<Thumnail style={{backgroundImage: `url(${image_url})`}}></Thumnail>
 			</CardAtag>
 			<TitInner>
 				<div>
-					<span className='like'>좋아요 6</span>
-					<span className='comment'>댓글 7</span>
+					<span className='like'>좋아요 6개</span>
+					<span className='comment'>댓글 7개</span>
 				</div>
 				<div>하트</div>
 			</TitInner>

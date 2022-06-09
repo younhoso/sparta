@@ -1,11 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components"
-// import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// import { collection, addDoc } from "firebase/firestore";
-// import { db } from "../shared/firebase"
 import {createStagramFB} from "../redux/modules/stagram"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const INITIAL_VALUES = {
 	nameFile: "파일선택",
@@ -17,9 +14,9 @@ const Write = () => {
 	const [values, setValues] = useState(INITIAL_VALUES);
 	const [preview, setPreview] = useState();
 	const [isSubmitting, setIsSubmitting] = useState(true);
-	// const storage = getStorage();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const _user = useSelector((state) => state.user.user);
 
 	const handleChange = (name, value) => {
 		setValues((prevValues) => ({
@@ -55,7 +52,7 @@ const Write = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const new_obj = { values, setIsSubmitting, navigate };
+		const new_obj = { values, setIsSubmitting, navigate, _user };
 		dispatch(createStagramFB(new_obj));
 	}	
 

@@ -16,6 +16,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/write" element={<Write />} />
+          <Route path="/write/:id" exact component={<Write />} />
         </Routes>
       <Button />
     </div>

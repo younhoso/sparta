@@ -7,6 +7,7 @@ import {loadStagramFB} from '../redux/modules/stagram';
 const Home = () => {
 	const dispatch = useDispatch();
 	const datas = useSelector((state) => state.stagram.list);
+	const user_info = useSelector((state) => state.user.user);
 
   useEffect(() => {
     dispatch(loadStagramFB())
@@ -15,9 +16,12 @@ const Home = () => {
 		<HomeWrap>
 			{
 				datas.map((el, idx) => {
-					return(
-						<Card image_url={el.image_url} key={idx}/>
-					)
+					if(el.id === user_info?.user_id){
+						return <Card id={el.id} image_url={el.image_url} key={idx} is_me/>
+					} else {
+						return <Card id={el.id} image_url={el.image_url} key={idx}/>
+					}
+					
 				})
 			}
 		</HomeWrap>

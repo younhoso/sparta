@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import styled from "styled-components"
-import {emailCheck} from '../shared/common';
-import { auth, db } from "../shared/firebase";
-import { collection, addDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useDispatch } from "react-redux";
+
+import { emailCheck } from '../shared/common';
+import { signupFB } from "../redux/modules/user"
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
 	const [id, setId] = useState("");
 	const [pwd, setPwd] = useState("");
 	const [pwd_check, setPwdCheck] = useState("");
 	const [user_name, setUserName] = useState("");
+	const dispatch = useDispatch();
+  const navigate = useNavigate();
 
 	const signupFu = async () => {
 		if (!id || !pwd || !user_name) {
@@ -26,12 +29,8 @@ const Signup = () => {
       window.alert("패스워드와 패스워드 확인이 일치하지 않습니다!");
       return;
     }
-
-		const user = await createUserWithEmailAndPassword(auth, id, pwd);
-		await addDoc(collection(db, "users"), {
-			user_id: user.user.email,
-			name: user_name
-		});
+		const new_obj = {id, pwd, user_name}
+		dispatch(signupFB(new_obj, navigate))
   }
 
 
