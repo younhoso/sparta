@@ -1,6 +1,6 @@
 import {auth, db} from "../../shared/firebase";
 import {collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, where, query} from "firebase/firestore"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from "firebase/auth";
 import { localStorage } from "../../shared/common";
 
 // Actions Type
@@ -16,16 +16,26 @@ export const userSetUser = (user) => ({type: SET_USER, user})
 // 로그인 함수 middleware
 export const loginFB = (id, pwd) => {
 	return async function (dispatch) {
-		const user = await signInWithEmailAndPassword(auth, id, pwd)
-		const user_docs = await getDocs(
-			query(collection(db, "users"), where("user_id", "==", user.user.email))
-		);
-		let user_list = [];
-		user_docs.forEach((el) => {
-			user_list = [...user_list, {id:el.id, ...el.data()}]; //로그인 사용자 정보 확인
+		setPersistence(auth, browserSessionPersistence)
+		.then(async() => {
+			const user = await signInWithEmailAndPassword(auth, id, pwd)
+			const user_docs = await getDocs(
+				query(collection(db, "users"), where("user_id", "==", user.user.email))
+			);
+			let user_list = [];
+			user_docs.forEach((el) => {
+				user_list = [...user_list, {id:el.id, ...el.data()}]; //로그인 사용자 정보 확인
+			});
+			console.log(user_list)
+			dispatch(userSetUser(user_list));
+		})
+		.catch((error) => {
+			const errorCode = error.code;
+			const errorMessage = error.message;
+
+			console.log(errorCode, errorMessage);
 		});
-	
-		dispatch(userSetUser(user_list));
+		
 	}
 };
 
