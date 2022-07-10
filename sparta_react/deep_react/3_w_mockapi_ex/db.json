@@ -1,23 +1,23 @@
 {
-  "sleep_times": [
+  "posts": [
     {
       "id": 1,
-      "day": "월",
-      "sleep_time": "10:00"
+      "title": "리덕스 미들웨어를 배워봅시다",
+      "body": "리덕스 미들웨어를 직접 만들어보면 이해하기 쉽죠."
     },
     {
       "id": 2,
-      "day": "화",
-      "sleep_time": "10:00"
+      "title": "redux-thunk를 사용해봅시다",
+      "body": "redux-thunk를 사용해서 비동기 작업을 처리해봅시다!"
     },
     {
       "id": 3,
-      "day": "수",
-      "sleep_time": "10:00"
+      "title": "redux-saga도 사용해봅시다",
+      "body": "나중엔 redux-saga를 사용해서 비동기 작업을 처리하는 방법도 배워볼 거예요."
     },
     {
-      "day": "목",
-      "sleep_time": "10:00",
+      "title": "react-query test",
+      "body": "react-query test",
       "id": 4
     }
   ]
