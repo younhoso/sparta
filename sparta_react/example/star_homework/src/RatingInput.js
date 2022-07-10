@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 
-const RATINGS = [1, 2, 3, 4, 5];
+// const RATINGS = [1, 2, 3, 4, 5];
+const RATINGS = Array.from( {length: 5}, (v, i) => i);
+console.log(RATINGS)
 
 function Star({selected = false, item = 0, onSelect }){
-	const className = `Rating-star ${selected ? 'selected' : ''}`;
+	const className = `Rating-star ${selected ? 'selected' : null}`;
 	const handleClick = onSelect ? () => onSelect(item) : undefined
 
 	return <Won onClick={handleClick} className={className}>★</Won>
@@ -16,14 +18,18 @@ function RatingInput({name, value, onChange}) {
 	const handleSelect = (nextValue) => onChange(name, nextValue);
 	return (
 		<ReviewTextBox>
-			{RATINGS.map((item, idx) => (
-				<Star 
+			{
+			RATINGS.map(function(item, idx){
+				{console.log(value >=item)}
+			  return(	<Star 
 					key={idx} 
 					selected={value >= item}
 					rating={rating}
 					item={item}
 					onSelect={handleSelect}/>
-			))}
+				)
+			})
+		}
 		</ReviewTextBox>
 	);
 }
